@@ -99,6 +99,38 @@
                     Clear All
                 </button>
             </div>
+            
+            <!-- POST Response Alert -->
+            <?php if (isset($postResult)): ?>
+                <div id="post-response-alert" class="mx-4 m-4 p-4 rounded-lg shadow-md border <?php echo $postResult['success'] ? 'bg-green-100 border-green-400 text-green-800 dark:bg-green-900/30 dark:text-green-300 dark:border-green-800' : 'bg-red-100 border-red-400 text-red-800 dark:bg-red-900/30 dark:text-red-300 dark:border-red-800'; ?>">
+                    
+                    <!-- Header & Close Button -->
+                    <div class="flex justify-between items-center pb-2 mb-2 border-b <?php echo $postResult['success'] ? 'border-green-300 dark:border-green-700/50' : 'border-red-300 dark:border-red-700/50'; ?>">
+                        <p class="font-bold text-lg">
+                            <?php echo $postResult['success'] ? '✅ POST Successful!' : '❌ POST Failed'; ?>
+                            <?php if(isset($postResult['code'])) echo " (HTTP " . $postResult['code'] . ")"; ?>
+                        </p>
+                        <!-- Inline JS to close the alert -->
+                        <button type="button" onclick="document.getElementById('post-response-alert').style.display='none'" class="text-2xl font-bold cursor-pointer hover:opacity-70">&times;</button>
+                    </div>
+                    
+                    <!-- Error Message (if cURL failed completely) -->
+                    <?php if (isset($postResult['message'])): ?>
+                        <p class="mb-2"><?php echo htmlspecialchars($postResult['message']); ?></p>
+                    <?php endif; ?>
+                    
+                    <!-- The Server's Response Data -->
+                    <?php if (isset($postResult['response']) && !empty($postResult['response'])): ?>
+                        <p class="text-sm font-semibold mb-1">Server Response:</p>
+                        <pre class="p-2 bg-white/60 dark:bg-black/30 rounded text-sm overflow-x-auto whitespace-pre-wrap"><?php 
+                            // Try to pretty-print the response if it's JSON
+                            $resDecoded = json_decode($postResult['response']);
+                            echo htmlspecialchars(json_last_error() === JSON_ERROR_NONE ? json_encode($resDecoded, JSON_PRETTY_PRINT) : $postResult['response']); 
+                        ?></pre>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
+
             <!-- Fetch and Post inputs -->
             <div class="flex-1 flex flex-row justify-evenly p-4">
                 <div class="w-1/2 flex flex-row card-theme-1 m-4 p-4">

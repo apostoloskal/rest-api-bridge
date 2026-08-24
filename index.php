@@ -40,7 +40,7 @@
                 @apply shadow-md bg-gray-200 dark:bg-slate-600 rounded-lg
             }
 
-            .fetch-button-1 {
+            .green-button-1 {
                 @apply text-white bg-green-500 dark:bg-green-700 rounded-lg
                 box-border border border-transparent hover:bg-green-400 
                 hover:dark:bg-green-600 focus:ring-4 focus:ring-green-600 
@@ -48,7 +48,7 @@
                 text-sm px-4 py-2.5 focus:outline-none cursor-pointer
             }
 
-            .post-button-1 {
+            .blue-button-1 {
                 @apply text-white bg-blue-500 dark:bg-blue-700 rounded-lg
                 box-border border border-transparent hover:bg-blue-400 
                 hover:dark:bg-blue-600 focus:ring-4 focus:ring-blue-600 
@@ -56,7 +56,7 @@
                 text-sm px-4 py-2.5 focus:outline-none cursor-pointer
             }
 
-            .clear-button-1 {
+            .red-button-1 {
                 @apply bg-red-500 hover:bg-red-400 text-white px-3 py-1 rounded text-sm
             }
 
@@ -64,6 +64,10 @@
                 @apply bg-gray-300 dark:bg-slate-800 focus:outline-none rounded-lg
                 box-border border border-transparent focus:ring-2 focus:ring-gray-400
                 focus:dark:ring-slate-800 shadow-xs text-sm
+            }
+
+            .card-theme-2 {
+                @apply shadow-md bg-gray-300 dark:bg-slate-800 rounded-lg
             }
         }
     </style>
@@ -94,24 +98,40 @@
             <div class="w-full items-center p-4">
                 <p class="text-center text-4xl font-semibold text-heading">Bridge</p>
             </div>
-            <div class="w-full text-right">
-                <button type="button" id="btn-clear" class="clear-button-1 cursor-pointer mr-4">
+            <div class="flex-1 flex flex-row justify-between">
+                <button type="button" id="btn-new-bridge" class="green-button-1 cursor-pointer ml-4 p-2">
+                    New Bridge
+                </button>
+                <button type="button" id="btn-clear" class="red-button-1 cursor-pointer mr-4 p-2">
                     Clear All
                 </button>
             </div>
             
             <!-- POST Response Alert -->
             <?php if (isset($postResult)): ?>
-                <div id="post-response-alert" class="mx-4 m-4 p-4 rounded-lg shadow-md border <?php echo $postResult['success'] ? 'bg-green-100 border-green-400 text-green-800 dark:bg-green-900/30 dark:text-green-300 dark:border-green-800' : 'bg-red-100 border-red-400 text-red-800 dark:bg-red-900/30 dark:text-red-300 dark:border-red-800'; ?>">
+                <div id="post-response-alert" 
+                class="mx-4 m-4 p-4 rounded-lg shadow-md border 
+                <?php echo $postResult['success'] ? 
+                'bg-green-100 border-green-400 text-green-800 
+                dark:bg-green-900/30 dark:text-green-300 dark:border-green-800' : 
+                'bg-red-100 border-red-400 text-red-800 dark:bg-red-900/30 
+                dark:text-red-300 dark:border-red-800'; ?>">
                     
                     <!-- Header & Close Button -->
-                    <div class="flex justify-between items-center pb-2 mb-2 border-b <?php echo $postResult['success'] ? 'border-green-300 dark:border-green-700/50' : 'border-red-300 dark:border-red-700/50'; ?>">
+                    <div class="flex justify-between items-center pb-2 mb-2 border-b 
+                    <?php echo $postResult['success'] ? 
+                    'border-green-300 dark:border-green-700/50' : 
+                    'border-red-300 dark:border-red-700/50'; ?>">
                         <p class="font-bold text-lg">
                             <?php echo $postResult['success'] ? '✅ POST Successful!' : '❌ POST Failed'; ?>
                             <?php if(isset($postResult['code'])) echo " (HTTP " . $postResult['code'] . ")"; ?>
                         </p>
                         <!-- Inline JS to close the alert -->
-                        <button type="button" onclick="document.getElementById('post-response-alert').style.display='none'" class="text-2xl font-bold cursor-pointer hover:opacity-70">&times;</button>
+                        <button type="button" 
+                        onclick="document.getElementById('post-response-alert').style.display='none'" 
+                        class="text-2xl font-bold cursor-pointer hover:opacity-70">
+                            &times;
+                        </button>
                     </div>
                     
                     <!-- Error Message (if cURL failed completely) -->
@@ -125,41 +145,28 @@
                         <pre class="p-2 bg-white/60 dark:bg-black/30 rounded text-sm overflow-x-auto whitespace-pre-wrap"><?php 
                             // Try to pretty-print the response if it's JSON
                             $resDecoded = json_decode($postResult['response']);
-                            echo htmlspecialchars(json_last_error() === JSON_ERROR_NONE ? json_encode($resDecoded, JSON_PRETTY_PRINT) : $postResult['response']); 
-                        ?></pre>
+                            echo htmlspecialchars(json_last_error() === JSON_ERROR_NONE ? 
+                            json_encode($resDecoded, JSON_PRETTY_PRINT) : 
+                            $postResult['response']); 
+                            ?>
+                        </pre>
                     <?php endif; ?>
                 </div>
             <?php endif; ?>
 
             <!-- Fetch and Post inputs -->
-            <div class="flex-1 flex flex-row justify-evenly p-4">
-                <div class="w-1/2 flex flex-row card-theme-1 m-4 p-4">
-                    <div class="w-full flex flex-col items-center">
-                        <label for="get_endpoint" class="mb-2">Get URL</label>
-                        <input
-                        name="get_endpoint"
-                        id="get_endpoint"
-                        placeholder="Get endpoint url"
-                        value="<?php echo isset($_POST['get_endpoint']) ? htmlspecialchars($_POST['get_endpoint']) : ''; ?>"
-                        class="bg-neutral-secondary-medium border 
-                        border-default-medium text-heading text-sm 
-                        rounded-base focus:ring-brand focus:border-brand 
-                        block w-full px-3 py-2.5 shadow-xs placeholder:text-body
-                        focus:outline-none"
-                        />
-                    </div>
-                    <div class="w-1/3 min-w-24 items-center p-4">
-                        <button type="submit" name="action" value="fetch" class="w-full mt-4 fetch-button-1">Fetch</button>
-                    </div>
+            <div class="flex-1 flex flex-col card-theme-1 m-4 p-2">
+                <div class="w-full items-center pb-2 border-b border-gray-300 dark:border-slate-500">
+                    <p class="text-center text-2xl font-semibold text-heading">Bridge Details</p>
                 </div>
-                <div class="w-1/2 flex flex-row card-theme-1 m-4 p-4">
-                    <div class="w-full flex flex-col items-center">
-                        <label for="post_endpoint" class="mb-2">Post URL</label>
+
+                <div class="flex-1 flex flex-row">
+                    <div class="w-1/3 flex flex-col items-center card-theme-2 p-4 m-4"> 
+                        <label for="get-endpoint" class="mb-2">Bridge Name</label>
                         <input
-                        name="post_endpoint"
-                        id="post_endpoint"
-                        placeholder="Post endpoint url"
-                        value="<?php echo isset($_POST['post_endpoint']) ? htmlspecialchars($_POST['post_endpoint']) : ''; ?>"
+                        name="bridge-name"
+                        id="bridge-name"
+                        placeholder="Bridge name"
                         class="bg-neutral-secondary-medium border 
                         border-default-medium text-heading text-sm 
                         rounded-base focus:ring-brand focus:border-brand 
@@ -167,13 +174,41 @@
                         focus:outline-none"
                         />
                     </div>
-                    <div class="w-1/3 min-w-24 items-center p-4">
-                        <button type="submit" name="action" value="post" class="w-full mt-4 post-button-1">Post</button>
+
+                    <div class="w-1/3 flex flex-col items-center card-theme-2 p-4 m-4"> 
+                        <label for="get-endpoint" class="mb-2">Get URL</label>
+                        <input
+                        name="get-endpoint"
+                        id="get-endpoint"
+                        placeholder="Get endpoint url"
+                        value="<?php echo isset($_POST['get-endpoint']) ? htmlspecialchars($_POST['get-endpoint']) : ''; ?>"
+                        class="bg-neutral-secondary-medium border 
+                        border-default-medium text-heading text-sm 
+                        rounded-base focus:ring-brand focus:border-brand 
+                        block w-full px-3 py-2.5 shadow-xs placeholder:text-body
+                        focus:outline-none"
+                        />
+                    </div>
+
+                    <div class="w-1/3 flex flex-col items-center card-theme-2 p-4 m-4"> 
+                        <label for="post-endpoint" class="mb-2">Post URL</label>
+                        <input
+                        name="post-endpoint"
+                        id="post-endpoint"
+                        placeholder="Post endpoint url"
+                        value="<?php echo isset($_POST['post-endpoint']) ? htmlspecialchars($_POST['post-endpoint']) : ''; ?>"
+                        class="bg-neutral-secondary-medium border 
+                        border-default-medium text-heading text-sm 
+                        rounded-base focus:ring-brand focus:border-brand 
+                        block w-full px-3 py-2.5 shadow-xs placeholder:text-body
+                        focus:outline-none"
+                        />
                     </div>
                 </div>
             </div>
+
             <!-- JSON Text Area -->
-            <div class="flex-1 flex flex-col card-theme-1 m-4 p-2 pt-4">
+            <div class="flex-1 flex flex-col card-theme-1 m-4 p-2">
                 <div class="w-full items-center pb-2 border-b border-gray-300 dark:border-slate-500">
                     <p class="text-center text-2xl font-semibold text-heading">JSON</p>
                 </div>
@@ -184,21 +219,21 @@
                     <div class="flex flex-col w-1/2 p-2 border-r border-gray-300 dark:border-slate-500">
                         <p class="text-center text-xl font-semibold text-heading pb-2">GET</p>
                         <div class="w-full h-full text-left">
-                            <textarea id="textarea-get" name="get_json"><?php echo htmlspecialchars($fetchedJson ?? ''); ?></textarea>
+                            <textarea id="textarea-get" name="get-json"><?php echo htmlspecialchars($fetchedJson ?? ''); ?></textarea>
                         </div>
                     </div>
                     
                     <div class="flex flex-col w-1/2 p-2">
                         <p class="text-center text-xl font-semibold text-heading pb-2">POST</p>
                         <div class="w-full h-full text-left">
-                            <textarea id="textarea-post" name="post_json"><?php echo htmlspecialchars($_POST['post_json'] ?? ''); ?></textarea>
+                            <textarea id="textarea-post" name="post-json"><?php echo htmlspecialchars($_POST['post-json'] ?? ''); ?></textarea>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Table Mapping -->
-            <div class="flex-1 flex flex-col card-theme-1 m-4 p-2 pt-4">
+            <div class="flex-1 flex flex-col card-theme-1 m-4 p-2">
                 <div class="w-full items-center pb-2 border-b border-gray-300 dark:border-slate-500">
                     <p class="text-center text-2xl font-semibold text-heading">Visual Mapper</p>
                 </div>

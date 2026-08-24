@@ -4,8 +4,8 @@ $postResult = null;
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     
-    if (isset($_POST['get_json'])) {
-        $fetchedJson = trim($_POST['get_json']);
+    if (isset($_POST['get-json'])) {
+        $fetchedJson = trim($_POST['get-json']);
     }
     
     $action = $_POST['action'] ?? '';
@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // Fetch action-
     if ($action === 'fetch') {
-        $getUrl = $_POST['get_endpoint'] ?? '';
+        $getUrl = $_POST['get-endpoint'] ?? '';
         
         if (!empty($getUrl)) {
             curl_setopt($ch, CURLOPT_URL, $getUrl);
@@ -38,8 +38,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     } 
     // Post action
     elseif ($action === 'post') {
-        $postUrl = $_POST['post_endpoint'] ?? '';
-        $postPayload = trim($_POST['post_json'] ?? '');
+        $postUrl = $_POST['post-endpoint'] ?? '';
+        $postPayload = trim($_POST['post-json'] ?? '');
 
         if (!empty($postUrl) && !empty($postPayload)) {
             curl_setopt($ch, CURLOPT_URL, $postUrl);

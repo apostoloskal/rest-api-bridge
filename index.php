@@ -222,7 +222,6 @@
         </form>
     </main>
 
-    <!-- Code Mirror initialization script -->
-    <script src="js/scripts.js"></script>
+    <script type="module" src="js/main.js"></script>
 </body>
 </html>

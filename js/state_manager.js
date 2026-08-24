@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('saved_get_json', editorGet.getValue());
     localStorage.setItem('saved_post_json', editorPost.getValue());
 
-    // Update jsons on modify
+    // Store json payloads to local storage on modification
     editorGet.on('change', () => localStorage.setItem('saved_get_json', editorGet.getValue()));
     editorPost.on('change', () => localStorage.setItem('saved_post_json', editorPost.getValue()));
 

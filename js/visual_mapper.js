@@ -23,8 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 // update any post payload's values based on the key mappings
                 for (const [postKey, getKey] of Object.entries(keyMappings)) {
                     if (postObj.hasOwnProperty(postKey) && getObj.hasOwnProperty(getKey)) { 
-                        // if the keys of the mapping are both present
-                        // sync the values
+                        // if the keys of the visual mapping are both present
+                        // in the two json payloads, sync the values
                         if (JSON.stringify(postObj[postKey]) !== JSON.stringify(getObj[getKey])) {
                             postObj[postKey] = getObj[getKey];
                             postUpdated = true;
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         for (const [key, value] of Object.entries(data)) {
             const row = document.createElement('div');
-            row.className = "flex justify-between p-3 bg-white dark:bg-slate-700 border border-dashed border-gray-400 dark:border-slate-400 rounded-md cursor-grab hover:bg-gray-50 dark:hover:bg-slate-600 shadow-sm active:cursor-grabbing";
+            row.className = "flex justify-between p-3 bg-white dark:bg-slate-700 border border-dashed border-gray-400 dark:border-slate-500 rounded-md cursor-grab hover:bg-gray-50 dark:hover:bg-slate-600 shadow-sm active:cursor-grabbing";
             row.draggable = true;
             
             row.innerHTML = `

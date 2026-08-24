@@ -174,14 +174,14 @@
             </div>
             <!-- JSON Text Area -->
             <div class="flex-1 flex flex-col card-theme-1 m-4 p-2 pt-4">
-                <div class="w-full items-center pb-2">
+                <div class="w-full items-center pb-2 border-b border-gray-300 dark:border-slate-500">
                     <p class="text-center text-2xl font-semibold text-heading">JSON</p>
                 </div>
                 
                 <!-- Code Mirror Text Areas -->
                 <div class="flex-1 flex flex-row min-h-[400px]"> 
                     
-                    <div class="flex flex-col w-1/2 p-2">
+                    <div class="flex flex-col w-1/2 p-2 border-r border-gray-300 dark:border-slate-500">
                         <p class="text-center text-xl font-semibold text-heading pb-2">GET</p>
                         <div class="w-full h-full text-left">
                             <textarea id="textarea-get" name="get_json"><?php echo htmlspecialchars($fetchedJson ?? ''); ?></textarea>
@@ -199,11 +199,11 @@
 
             <!-- Table Mapping -->
             <div class="flex-1 flex flex-col card-theme-1 m-4 p-2 pt-4">
-                <div class="w-full flex justify-between items-center px-4 pb-2 border-b border-gray-300 dark:border-slate-500">
-                    <p class="text-2xl font-semibold text-heading">Visual Mapper</p>
+                <div class="w-full items-center pb-2 border-b border-gray-300 dark:border-slate-500">
+                    <p class="text-center text-2xl font-semibold text-heading">Visual Mapper</p>
                 </div>
                 
-                <div class="flex-1 flex flex-row min-h-[300px] mt-4"> 
+                <div class="flex-1 flex flex-row min-h-[300px]"> 
                     <div class="flex flex-col w-1/2 p-2 border-r border-gray-300 dark:border-slate-500">
                         <p class="text-center text-xl font-semibold text-heading pb-2">GET Data (Drag from here)</p>
                         <div id="get-table-container" class="w-full h-full flex flex-col gap-2 overflow-y-auto table-theme-1 p-2">

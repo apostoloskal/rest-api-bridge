@@ -19,17 +19,25 @@ document.addEventListener('DOMContentLoaded', () => {
     editorGet.on('change', () => localStorage.setItem('saved_get_json', editorGet.getValue()));
     editorPost.on('change', () => localStorage.setItem('saved_post_json', editorPost.getValue()));
 
-    // URL storage
+    // Bridge details storage
+    const bridgeName = document.getElementById('bridge-name');
     const getEndpoint = document.getElementById('get-endpoint');
     const postEndpoint = document.getElementById('post-endpoint');
 
-    if (getEndpoint && postEndpoint) {
+    if (bridgeName && getEndpoint && postEndpoint) {
+        if (!bridgeName.value && localStorage.getItem('saved_bridge_name')) {
+            bridgeName.value = localStorage.getItem('saved_bridge_name');
+        }
         if (!getEndpoint.value && localStorage.getItem('saved_get_url')) {
             getEndpoint.value = localStorage.getItem('saved_get_url');
         }
         if (!postEndpoint.value && localStorage.getItem('saved_post_url')) {
             postEndpoint.value = localStorage.getItem('saved_post_url');
         }
+
+        bridgeName.addEventListener('input', () => {
+            localStorage.setItem('saved_bridge_name', bridgeName.value);
+        });
 
         getEndpoint.addEventListener('input', () => {
             localStorage.setItem('saved_get_url', getEndpoint.value);
@@ -49,12 +57,14 @@ document.addEventListener('DOMContentLoaded', () => {
             editorPost.setValue('');
             
             // Clear Input fields
+            if(bridgeName) bridgeName.value = '';
             if(getEndpoint) getEndpoint.value = '';
             if(postEndpoint) postEndpoint.value = '';
             
             // Clear ALL LocalStorage items
             localStorage.removeItem('saved_get_json');
             localStorage.removeItem('saved_post_json');
+            localStorage.removeItem('saved_bridge_name');
             localStorage.removeItem('saved_get_url');
             localStorage.removeItem('saved_post_url');
             localStorage.removeItem('saved_key_mappings');
@@ -112,7 +122,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 if (result.success) {
                     alert("✅ " + result.message);
-                    document.getElementById('bridge-name').value = ''; // clear name input on success
                 } else {
                     alert("❌ Failed to save: " + result.message);
                 }

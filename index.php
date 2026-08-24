@@ -98,11 +98,8 @@
             <div class="w-full items-center p-4">
                 <p class="text-center text-4xl font-semibold text-heading">Bridge</p>
             </div>
-            <div class="flex-1 flex flex-row justify-between">
-                <button type="button" id="btn-new-bridge" class="green-button-1 cursor-pointer ml-4 p-2">
-                    New Bridge
-                </button>
-                <button type="button" id="btn-clear" class="red-button-1 cursor-pointer mr-4 p-2">
+            <div class="w-full text-right">
+                <button type="button" id="btn-clear" class="red-button-1 cursor-pointer mr-4">
                     Clear All
                 </button>
             </div>
@@ -154,7 +151,7 @@
                 </div>
             <?php endif; ?>
 
-            <!-- Fetch and Post inputs -->
+            <!-- Bridge Connection Details -->
             <div class="flex-1 flex flex-col card-theme-1 m-4 p-2">
                 <div class="w-full items-center pb-2 border-b border-gray-300 dark:border-slate-500">
                     <p class="text-center text-2xl font-semibold text-heading">Bridge Details</p>
@@ -162,7 +159,7 @@
 
                 <div class="flex-1 flex flex-row">
                     <div class="w-1/3 flex flex-col items-center card-theme-2 p-4 m-4"> 
-                        <label for="get-endpoint" class="mb-2">Bridge Name</label>
+                        <label for="bridge-name" class="mb-2">Bridge Name</label>
                         <input
                         name="bridge-name"
                         id="bridge-name"
@@ -181,7 +178,6 @@
                         name="get-endpoint"
                         id="get-endpoint"
                         placeholder="Get endpoint url"
-                        value="<?php echo isset($_POST['get-endpoint']) ? htmlspecialchars($_POST['get-endpoint']) : ''; ?>"
                         class="bg-neutral-secondary-medium border 
                         border-default-medium text-heading text-sm 
                         rounded-base focus:ring-brand focus:border-brand 
@@ -196,7 +192,6 @@
                         name="post-endpoint"
                         id="post-endpoint"
                         placeholder="Post endpoint url"
-                        value="<?php echo isset($_POST['post-endpoint']) ? htmlspecialchars($_POST['post-endpoint']) : ''; ?>"
                         class="bg-neutral-secondary-medium border 
                         border-default-medium text-heading text-sm 
                         rounded-base focus:ring-brand focus:border-brand 
@@ -204,6 +199,14 @@
                         focus:outline-none"
                         />
                     </div>
+                </div>
+                    <div class="w-fit ml-auto">
+                        <button type="button" id="btn-new-bridge" class="w-fit green-button-1 cursor-pointer mr-4 p-2">
+                            Create New Bridge
+                        </button>
+                    </div>
+                <div>
+
                 </div>
             </div>
 

@@ -60,11 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (!window.keyMappings) window.keyMappings = {};
                     localStorage.setItem('saved_key_mappings', JSON.stringify(window.keyMappings));
                     
-                    // Clean up CodeMirror editors if they had junk in them
-                    editorGet.setValue('');
-                    editorPost.setValue('');
-                    localStorage.removeItem('saved_get_json');
-                    localStorage.removeItem('saved_post_json');
                 } else {
                     alert("Could not load bridge: " + result.message);
                 }

@@ -25,7 +25,7 @@ try {
     $createTableQuery = "
         CREATE TABLE IF NOT EXISTS saved_bridges (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255) NOT NULL,
+            name VARCHAR(255) UNIQUE NOT NULL,
             src_url TEXT NOT NULL,
             dst_url TEXT NOT NULL,
             key_mappings JSON,

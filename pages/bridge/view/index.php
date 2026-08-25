@@ -271,14 +271,12 @@
                     <div class="flex flex-col w-1/2 p-2 border-r border-gray-300 dark:border-slate-500">
                         <p class="text-center text-xl font-semibold text-heading pb-2">GET Data (Drag from here)</p>
                         <div id="get-table-container" class="w-full h-full flex flex-col gap-2 overflow-y-auto table-theme-1 p-2">
-                            <p class="text-center text-sm text-gray-500 mt-10">Waiting for valid GET JSON...</p>
                         </div>
                     </div>
                     
                     <div class="flex flex-col w-1/2 p-2">
                         <p class="text-center text-xl font-semibold text-heading pb-2">POST Payload (Drop here)</p>
                         <div id="post-table-container" class="w-full h-full flex flex-col gap-2 overflow-y-auto table-theme-1 p-2">
-                            <p class="text-center text-sm text-gray-500 mt-10">Waiting for valid POST JSON...</p>
                         </div>
                     </div>
                 </div>

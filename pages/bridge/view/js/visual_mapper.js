@@ -70,7 +70,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Render GET table
     function renderGetTable(data) {
-        getContainer.innerHTML = ''; 
+        if (!data || Object.keys(data).length === 0) {
+            getContainer.innerHTML = '<p class="text-center text-sm text-gray-500 mt-10">Waiting for valid GET JSON...</p>';
+            return;
+        }
+
+        getContainer.innerHTML = '';
         
         for (const [key, value] of Object.entries(data)) {
             const row = document.createElement('div');
@@ -96,6 +101,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Render POST Table
     function renderPostTable(data) {
+        if (!data || Object.keys(data).length === 0) {
+            postContainer.innerHTML = '<p class="text-center text-sm text-gray-500 mt-10">Waiting for valid POST JSON...</p>';
+            return;
+        }
+
         postContainer.innerHTML = ''; 
         
         for (const [key, value] of Object.entries(data)) {

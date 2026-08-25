@@ -1,5 +1,22 @@
-<?php 
-    include 'php/rest_api_methods.php'; 
+<?php
+require 'php/database.php';
+
+// Pagination setup
+$limit = 10;
+$page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($page - 1) * $limit;
+
+// Get total number of bridges for pagination math
+$totalQuery = $pdo->query("SELECT COUNT(*) FROM saved_bridges");
+$totalBridges = $totalQuery->fetchColumn();
+$totalPages = ceil($totalBridges / $limit);
+
+// Fetch the bridges for the current page
+$stmt = $pdo->prepare("SELECT id, name, src_url, dst_url, created_at FROM saved_bridges ORDER BY created_at DESC LIMIT :limit OFFSET :offset");
+$stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+$stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+$stmt->execute();
+$bridges = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -8,18 +25,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bridge</title>
-
-    <!-- CodeMirror Core CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
-
-    <!-- CodeMirror Core JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
-
-    <!-- CodeMirror JSON/JavaScript Mode -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
-
-    <!-- CodeMirror Dracula Dark Theme -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/dracula.min.css">
 
     <!-- Tailwind CSS -->
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
@@ -53,7 +58,7 @@
                 box-border border border-transparent hover:bg-blue-400 
                 hover:dark:bg-blue-600 focus:ring-4 focus:ring-blue-600 
                 focus:dark:ring-blue-800 shadow-xs font-medium leading-5
-                text-sm px-4 py-2.5 focus:outline-none cursor-pointer
+                text-sm px-4 py-1.5 focus:outline-none cursor-pointer
             }
 
             .red-button-1 {
@@ -72,18 +77,6 @@
         }
     </style>
 
-    <style>
-        .CodeMirror {
-            height: 100% !important;
-            font-family: monospace;
-            font-size: medium;
-            border-radius: 0.5rem;
-            overflow: hidden;
-            box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-            cursor: text;
-        }
-    </style>
-
     <script>
         // Prevent browser from resubmitting the form on page refresh (F5)
         if (window.history.replaceState) {
@@ -96,170 +89,58 @@
     <main>
         <form method="POST" class="flex-1 flex flex-col max-w-5xl m-auto">
             <div class="w-full items-center p-4">
-                <p class="text-center text-4xl font-semibold text-heading">Bridge</p>
+                <p class="text-center text-4xl font-semibold text-heading">Bridges</p>
             </div>
-            <div class="w-full text-right">
-                <button type="button" id="btn-clear" class="red-button-1 cursor-pointer mr-4">
-                    Clear All
-                </button>
-            </div>
-            
-            <!-- POST Response Alert -->
-            <?php if (isset($postResult)): ?>
-                <div id="post-response-alert" 
-                class="mx-4 m-4 p-4 rounded-lg shadow-md border 
-                <?php echo $postResult['success'] ? 
-                'bg-green-100 border-green-400 text-green-800 
-                dark:bg-green-900/30 dark:text-green-300 dark:border-green-800' : 
-                'bg-red-100 border-red-400 text-red-800 dark:bg-red-900/30 
-                dark:text-red-300 dark:border-red-800'; ?>">
-                    
-                    <!-- Header & Close Button -->
-                    <div class="flex justify-between items-center pb-2 mb-2 border-b 
-                    <?php echo $postResult['success'] ? 
-                    'border-green-300 dark:border-green-700/50' : 
-                    'border-red-300 dark:border-red-700/50'; ?>">
-                        <p class="font-bold text-lg">
-                            <?php echo $postResult['success'] ? '✅ POST Successful!' : '❌ POST Failed'; ?>
-                            <?php if(isset($postResult['code'])) echo " (HTTP " . $postResult['code'] . ")"; ?>
-                        </p>
-                        <!-- Inline JS to close the alert -->
-                        <button type="button" 
-                        onclick="document.getElementById('post-response-alert').style.display='none'" 
-                        class="text-2xl font-bold cursor-pointer hover:opacity-70">
-                            &times;
-                        </button>
+
+            <div class="card-theme-1 flex-1 flex flex-col">
+                <?php if (count($bridges) === 0): ?>
+                    <div class="text-center text-gray-500 dark:text-gray-300 my-auto py-12">
+                        <p class="text-xl">No bridges saved yet.</p>
                     </div>
-                    
-                    <!-- Error Message (if cURL failed completely) -->
-                    <?php if (isset($postResult['message'])): ?>
-                        <p class="mb-2"><?php echo htmlspecialchars($postResult['message']); ?></p>
+                <?php else: ?>
+                    <div class="overflow-x-auto flex-1">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-gray-300 dark:bg-slate-700">
+                                    <th class="py-3 px-4">Name</th>
+                                    <th class="py-3 px-4">Get URL</th>
+                                    <th class="py-3 px-4">Post URL</th>
+                                    <th class="py-3 px-4 text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($bridges as $bridge): ?>
+                                    <tr class="border-t border-gray-300 dark:border-slate-500 hover:bg-gray-300 dark:hover:bg-slate-700 transition-colors">
+                                        <td class="py-3 px-4 font-semibold"><?php echo htmlspecialchars($bridge['name']); ?></td>
+                                        <td class="py-3 px-4 text-sm truncate max-w-xs text-gray-600 dark:text-gray-300"><?php echo htmlspecialchars($bridge['src_url']); ?></td>
+                                        <td class="py-3 px-4 text-sm truncate max-w-xs text-gray-600 dark:text-gray-300"><?php echo htmlspecialchars($bridge['dst_url']); ?></td>
+                                        <td class="py-3 px-3 text-right">
+                                            <!-- This link sends the ID to index.php! -->
+                                            <a href="/pages/bridge?id=<?php echo $bridge['id']; ?>" class="blue-button-1">
+                                                Open
+                                            </a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination Controls -->
+                    <?php if ($totalPages > 1): ?>
+                        <div class="flex justify-center items-center gap-2 border-t border-gray-300 dark:border-slate-500">
+                            <div class="m-4">
+                                <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                                    <a href="?page=<?php echo $i; ?>" class="px-3 py-1 m-2 border rounded <?php echo $i === $page ? 'bg-indigo-500 text-white border-indigo-500' : 'border-gray-400 hover:bg-gray-300 dark:hover:bg-slate-500'; ?>">
+                                        <?php echo $i; ?>
+                                    </a>
+                                <?php endfor; ?>
+                            <div>
+                        </div>
                     <?php endif; ?>
-                    
-                    <!-- The Server's Response Data -->
-                    <?php if (isset($postResult['response']) && !empty($postResult['response'])): ?>
-                        <p class="text-sm font-semibold mb-1">Server Response:</p>
-                        <pre class="p-2 bg-white/60 dark:bg-black/30 rounded text-sm overflow-x-auto whitespace-pre-wrap"><?php 
-                            // Try to pretty-print the response if it's JSON
-                            $resDecoded = json_decode($postResult['response']);
-                            echo htmlspecialchars(json_last_error() === JSON_ERROR_NONE ? 
-                            json_encode($resDecoded, JSON_PRETTY_PRINT) : 
-                            $postResult['response']); 
-                            ?>
-                        </pre>
-                    <?php endif; ?>
-                </div>
-            <?php endif; ?>
-
-            <!-- Bridge Connection Details -->
-            <div class="flex-1 flex flex-col card-theme-1 m-4 p-2">
-                <div class="w-full items-center pb-2 border-b border-gray-300 dark:border-slate-500">
-                    <p class="text-center text-2xl font-semibold text-heading">Bridge Details</p>
-                </div>
-
-                <div class="flex-1 flex flex-row">
-                    <div class="w-1/3 flex flex-col items-center card-theme-2 p-4 m-4"> 
-                        <label for="bridge-name" class="mb-2">Bridge Name</label>
-                        <input
-                        name="bridge-name"
-                        id="bridge-name"
-                        placeholder="Bridge name"
-                        class="bg-neutral-secondary-medium border 
-                        border-default-medium text-heading text-sm 
-                        rounded-base focus:ring-brand focus:border-brand 
-                        block w-full px-3 py-2.5 shadow-xs placeholder:text-body
-                        focus:outline-none"
-                        />
-                    </div>
-
-                    <div class="w-1/3 flex flex-col items-center card-theme-2 p-4 m-4"> 
-                        <label for="get-endpoint" class="mb-2">Get URL</label>
-                        <input
-                        name="get-endpoint"
-                        id="get-endpoint"
-                        placeholder="Get endpoint url"
-                        class="bg-neutral-secondary-medium border 
-                        border-default-medium text-heading text-sm 
-                        rounded-base focus:ring-brand focus:border-brand 
-                        block w-full px-3 py-2.5 shadow-xs placeholder:text-body
-                        focus:outline-none"
-                        />
-                    </div>
-
-                    <div class="w-1/3 flex flex-col items-center card-theme-2 p-4 m-4"> 
-                        <label for="post-endpoint" class="mb-2">Post URL</label>
-                        <input
-                        name="post-endpoint"
-                        id="post-endpoint"
-                        placeholder="Post endpoint url"
-                        class="bg-neutral-secondary-medium border 
-                        border-default-medium text-heading text-sm 
-                        rounded-base focus:ring-brand focus:border-brand 
-                        block w-full px-3 py-2.5 shadow-xs placeholder:text-body
-                        focus:outline-none"
-                        />
-                    </div>
-                </div>
-                    <div class="w-fit ml-auto">
-                        <button type="button" id="btn-new-bridge" class="w-fit green-button-1 cursor-pointer mr-4 p-2">
-                            Create New Bridge
-                        </button>
-                    </div>
-                <div>
-
-                </div>
-            </div>
-
-            <!-- JSON Text Area -->
-            <div class="flex-1 flex flex-col card-theme-1 m-4 p-2">
-                <div class="w-full items-center pb-2 border-b border-gray-300 dark:border-slate-500">
-                    <p class="text-center text-2xl font-semibold text-heading">JSON</p>
-                </div>
-                
-                <!-- Code Mirror Text Areas -->
-                <div class="flex-1 flex flex-row min-h-[400px]"> 
-                    
-                    <div class="flex flex-col w-1/2 p-2 border-r border-gray-300 dark:border-slate-500">
-                        <p class="text-center text-xl font-semibold text-heading pb-2">GET</p>
-                        <div class="w-full h-full text-left">
-                            <textarea id="textarea-get" name="get-json"><?php echo htmlspecialchars($fetchedJson ?? ''); ?></textarea>
-                        </div>
-                    </div>
-                    
-                    <div class="flex flex-col w-1/2 p-2">
-                        <p class="text-center text-xl font-semibold text-heading pb-2">POST</p>
-                        <div class="w-full h-full text-left">
-                            <textarea id="textarea-post" name="post-json"><?php echo htmlspecialchars($_POST['post-json'] ?? ''); ?></textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Table Mapping -->
-            <div class="flex-1 flex flex-col card-theme-1 m-4 p-2">
-                <div class="w-full items-center pb-2 border-b border-gray-300 dark:border-slate-500">
-                    <p class="text-center text-2xl font-semibold text-heading">Visual Mapper</p>
-                </div>
-                
-                <div class="flex-1 flex flex-row min-h-[300px]"> 
-                    <div class="flex flex-col w-1/2 p-2 border-r border-gray-300 dark:border-slate-500">
-                        <p class="text-center text-xl font-semibold text-heading pb-2">GET Data (Drag from here)</p>
-                        <div id="get-table-container" class="w-full h-full flex flex-col gap-2 overflow-y-auto table-theme-1 p-2">
-                            <p class="text-center text-sm text-gray-500 mt-10">Waiting for valid GET JSON...</p>
-                        </div>
-                    </div>
-                    
-                    <div class="flex flex-col w-1/2 p-2">
-                        <p class="text-center text-xl font-semibold text-heading pb-2">POST Payload (Drop here)</p>
-                        <div id="post-table-container" class="w-full h-full flex flex-col gap-2 overflow-y-auto table-theme-1 p-2">
-                            <p class="text-center text-sm text-gray-500 mt-10">Waiting for valid POST JSON...</p>
-                        </div>
-                    </div>
-                </div>
+                <?php endif; ?>
             </div>
         </form>
     </main>
-
-    <script type="module" src="js/main.js"></script>
 </body>
 </html>

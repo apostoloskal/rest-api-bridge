@@ -4,6 +4,56 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!editorGet || !editorPost) return;
 
+    // Load bridge from url params
+    const urlParams = new URLSearchParams(window.location.search);
+    const bridgeId = urlParams.get('id');
+
+    if (bridgeId) {
+        // Fetch the configuration from the database
+        fetch(`/php/load_bridge.php?id=${bridgeId}`)
+            .then(res => res.json())
+            .then(result => {
+                if (result.success) {
+                    const data = result.data;
+                    
+                    // Populate URL inputs
+                    const getEp = document.getElementById('get-endpoint');
+                    const postEp = document.getElementById('post-endpoint');
+                    if (getEp) getEp.value = data.src_url;
+                    if (postEp) postEp.value = data.dst_url;
+                    
+                    // Populate the Bridge Name input
+                    const nameInput = document.getElementById('bridge-name');
+                    if (nameInput) nameInput.value = data.name;
+
+                    // Load Key Mappings safely
+                    window.keyMappings = typeof data.key_mappings === 'string' ? JSON.parse(data.key_mappings) : data.key_mappings;
+                    if (!window.keyMappings) window.keyMappings = {};
+                    
+                    // Force-save everything to LocalStorage so it persists
+                    localStorage.setItem('saved_bridge_name', data.name);
+                    localStorage.setItem('saved_get_url', data.src_url);
+                    localStorage.setItem('saved_post_url', data.dst_url);
+                    localStorage.setItem('saved_key_mappings', JSON.stringify(window.keyMappings));
+                    
+                    // Clean up CodeMirror editors if they had junk in them
+                    editorGet.setValue('');
+                    editorPost.setValue('');
+                    localStorage.removeItem('saved_get_json');
+                    localStorage.removeItem('saved_post_json');
+
+                    // REMOVE the ?id= parameter from the URL so refreshing doesn't reload it!
+                    if (window.history.replaceState) {
+                        const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+                        window.history.replaceState({path: cleanUrl}, '', cleanUrl);
+                    }
+                } else {
+                    alert("❌ Could not load bridge: " + result.message);
+                }
+            })
+            .catch(err => console.error("Error loading bridge:", err));
+    }
+
     // JSON storage
     if (!editorGet.getValue().trim() && localStorage.getItem('saved_get_json')) {
         editorGet.setValue(localStorage.getItem('saved_get_json'));
@@ -110,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 // Send the data to your PHP endpoint
-                const response = await fetch('php/save_bridge.php', {
+                const response = await fetch('/php/save_bridge.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

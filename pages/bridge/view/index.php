@@ -57,7 +57,7 @@
             }
 
             .red-button-1 {
-                @apply bg-red-700 dark:bg-red-500 hover:bg-red-400 text-white px-3 py-1 rounded text-sm
+                @apply bg-red-700 dark:bg-red-500 hover:bg-red-400 text-white px-3 py-1.5 rounded text-sm
             }
 
             .table-theme-1 {
@@ -261,9 +261,12 @@
             <!-- Table Mapping -->
             <div class="flex-1 flex flex-col card-theme-1 m-4 p-2">
                 <div class="relative flex items-center justify-center pb-2 border-b border-gray-300 dark:border-slate-500">
+                    <button type="button" id="btn-clear" class="absolute left-1 red-button-1 cursor-pointer mr-4">
+                        Clear Mappings
+                    </button>
                     <p class="text-2xl font-semibold text-heading">Visual Mapper</p>
-                    <button type="button" id="btn-clear" class="absolute right-1 red-button-1 cursor-pointer mr-4">
-                        Clear All
+                    <button type="button" id="btn-update-key-mappings" class="absolute right-1 inline-block ml-4 violet-button-1">
+                        Update
                     </button>
                 </div>
                 

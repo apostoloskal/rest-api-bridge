@@ -90,10 +90,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // Update Bridge Details
-    const btnUpdate = document.getElementById('btn-update-bridge-details');
+    const btnDetailsUpdate = document.getElementById('btn-update-bridge-details');
     
-    if (btnUpdate) {
-        btnUpdate.addEventListener('click', async () => {
+    if (btnDetailsUpdate) {
+        btnDetailsUpdate.addEventListener('click', async () => {
             const urlParams = new URLSearchParams(window.location.search);
             const bridgeId = urlParams.get('id');
 
@@ -130,8 +130,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: headersObj
             };
 
-            const originalText = btnUpdate.innerText;
-            btnUpdate.innerText = "Updating...";
+            const originalText = btnDetailsUpdate.innerText;
+            btnDetailsUpdate.innerText = "Updating...";
 
             try {
                 // Send it to the new UPDATE endpoint
@@ -152,7 +152,53 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error("Error updating bridge:", error);
                 alert("A network error occurred while updating.");
             } finally {
-                btnUpdate.innerText = originalText;
+                btnDetailsUpdate.innerText = originalText;
+            }
+        });
+    }
+
+    // Update Bridge Key Mappings
+    const btnKeyMappingsUpdate = document.getElementById('btn-update-key-mappings');
+    
+    if (btnKeyMappingsUpdate) {
+        btnKeyMappingsUpdate.addEventListener('click', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const bridgeId = urlParams.get('id');
+
+            if (!bridgeId) {
+                alert("Cannot update: No Bridge ID found in the URL.");
+                return;
+            }
+
+            // Construct the payload WITH the ID
+            const payload = {
+                id: bridgeId, 
+                key_mappings: window.keyMappings
+            };
+
+            const originalText = btnKeyMappingsUpdate.innerText;
+            btnKeyMappingsUpdate.innerText = "Updating...";
+
+            try {
+                // Send it to the new UPDATE endpoint
+                const response = await fetch('/php/update_bridge_key_mappings.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert(result.message);
+                } else {
+                    alert("Failed to update: " + result.message);
+                }
+            } catch (error) {
+                console.error("Error updating bridge:", error);
+                alert("A network error occurred while updating.");
+            } finally {
+                btnKeyMappingsUpdate.innerText = originalText;
             }
         });
     }

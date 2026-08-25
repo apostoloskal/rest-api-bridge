@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         window.history.replaceState({path: cleanUrl}, '', cleanUrl);
                     }
                 } else {
-                    alert("❌ Could not load bridge: " + result.message);
+                    alert("Could not load bridge: " + result.message);
                 }
             })
             .catch(err => console.error("Error loading bridge:", err));
@@ -171,13 +171,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const result = await response.json();
                 
                 if (result.success) {
-                    alert("✅ " + result.message);
+                    alert(result.message);
                 } else {
-                    alert("❌ Failed to save: " + result.message);
+                    alert("Failed to save: " + result.message);
                 }
             } catch (error) {
                 console.error("Error saving bridge:", error);
-                alert("❌ A network error occurred while saving.");
+                alert("A network error occurred while saving.");
             } finally {
                 // Restore button text
                 btnSave.innerText = originalText;

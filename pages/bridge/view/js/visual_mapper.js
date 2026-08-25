@@ -1,3 +1,20 @@
+function safelyParseJSON(rawString) {
+    if (!rawString) return {};
+    
+    // The Regex: Match a full string literal OR a trailing comma
+    const cleanedString = rawString.replace(/"(?:[^"\\]|\\.)*"|,\s*([\]}])/g, (match, bracket) => {
+        // If 'bracket' exists, we found a trailing comma! Return just the bracket.
+        if (bracket) {
+            return bracket;
+        }
+        // Otherwise, we matched a string literal. Return it completely untouched.
+        return match;
+    });
+
+    return JSON.parse(cleanedString);
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const editorGet = window.editorGet;
     const editorPost = window.editorPost;
@@ -12,16 +29,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateGetTable() {
         try {
-            const getObj = JSON.parse(editorGet.getValue());
+            const getObj = safelyParseJSON(editorGet.getValue());
             renderGetTable(getObj);
 
             try {
-                const postObj = JSON.parse(editorPost.getValue());
+                const postObj = safelyParseJSON(editorPost.getValue());
                 let postUpdated = false;
                 
                 // if the source payload (get endpoint) is changed/refreshed
                 // update any post payload's values based on the key mappings
-                for (const [postKey, getKey] of Object.entries(keyMappings)) {
+                for (const [postKey, getKey] of Object.entries(window.keyMappings)) {
                     if (postObj.hasOwnProperty(postKey) && getObj.hasOwnProperty(getKey)) { 
                         // if the keys of the visual mapping are both present
                         // in the two json payloads, sync the values

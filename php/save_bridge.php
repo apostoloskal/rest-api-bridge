@@ -18,8 +18,8 @@ $src_url = trim($data['src_url'] ?? '');
 $dst_url = trim($data['dst_url'] ?? '');
 
 // Convert arrays back to JSON strings for MariaDB's JSON column
-$key_mappings = isset($data['key_mappings']) ? json_encode($data['key_mappings']) : '{}';
-$headers = isset($data['headers']) ? json_encode($data['headers']) : '{}';
+$key_mappings = !empty($data['key_mappings']) ? json_encode($data['key_mappings']) : '{}';
+$headers = !empty($data['headers']) ? json_encode($data['headers']) : '{}';
 
 // Basic Validation
 if (empty($name) || empty($src_url) || empty($dst_url)) {

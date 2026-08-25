@@ -58,12 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Load Key Mappings safely
                     window.keyMappings = typeof data.key_mappings === 'string' ? safelyParseJSON(data.key_mappings) : data.key_mappings;
                     if (!window.keyMappings) window.keyMappings = {};
-                    
-                    // Force-save everything to LocalStorage so it persists
-                    localStorage.setItem('saved_bridge_name', data.name);
-                    localStorage.setItem('saved_get_url', data.src_url);
-                    localStorage.setItem('saved_post_url', data.dst_url);
                     localStorage.setItem('saved_key_mappings', JSON.stringify(window.keyMappings));
+                    console.log(data.key_mappings)
                     
                     // Clean up CodeMirror editors if they had junk in them
                     editorGet.setValue('');
@@ -85,70 +81,13 @@ document.addEventListener('DOMContentLoaded', () => {
         editorPost.setValue(localStorage.getItem('saved_post_json'));
     }
 
+    // Load request payloads on page load
     localStorage.setItem('saved_get_json', editorGet.getValue());
     localStorage.setItem('saved_post_json', editorPost.getValue());
 
-    // Store json payloads to local storage on modification
+    // Store any changes made to the request payloads
     editorGet.on('change', () => localStorage.setItem('saved_get_json', editorGet.getValue()));
     editorPost.on('change', () => localStorage.setItem('saved_post_json', editorPost.getValue()));
-
-    // Bridge details storage
-    const bridgeName = document.getElementById('bridge-name');
-    const getEndpoint = document.getElementById('get-endpoint');
-    const postEndpoint = document.getElementById('post-endpoint');
-
-    if (bridgeName && getEndpoint && postEndpoint) {
-        if (!bridgeName.value && localStorage.getItem('saved_bridge_name')) {
-            bridgeName.value = localStorage.getItem('saved_bridge_name');
-        }
-        if (!getEndpoint.value && localStorage.getItem('saved_get_url')) {
-            getEndpoint.value = localStorage.getItem('saved_get_url');
-        }
-        if (!postEndpoint.value && localStorage.getItem('saved_post_url')) {
-            postEndpoint.value = localStorage.getItem('saved_post_url');
-        }
-
-        bridgeName.addEventListener('input', () => {
-            localStorage.setItem('saved_bridge_name', bridgeName.value);
-        });
-
-        getEndpoint.addEventListener('input', () => {
-            localStorage.setItem('saved_get_url', getEndpoint.value);
-        });
-
-        postEndpoint.addEventListener('input', () => {
-            localStorage.setItem('saved_post_url', postEndpoint.value);
-        });
-    }
-
-    // Clear fields and storage
-    const btnClear = document.getElementById('btn-clear');
-    if (btnClear) {
-        btnClear.addEventListener('click', () => {
-            // Clear CodeMirror editors
-            editorGet.setValue('');
-            editorPost.setValue('');
-            
-            // Clear Input fields
-            if(bridgeName) bridgeName.value = '';
-            if(getEndpoint) getEndpoint.value = '';
-            if(postEndpoint) postEndpoint.value = '';
-            
-            // Clear ALL LocalStorage items
-            localStorage.removeItem('saved_get_json');
-            localStorage.removeItem('saved_post_json');
-            localStorage.removeItem('saved_bridge_name');
-            localStorage.removeItem('saved_get_url');
-            localStorage.removeItem('saved_post_url');
-            localStorage.removeItem('saved_key_mappings');
-
-            window.keyMappings = {};
-
-            // Reset tables
-            document.getElementById('get-table-container').innerHTML = '<p class="text-center text-sm text-gray-500 mt-10">Waiting for valid GET JSON...</p>';
-            document.getElementById('post-table-container').innerHTML = '<p class="text-center text-sm text-gray-500 mt-10">Waiting for valid POST JSON...</p>';
-        });
-    }
 
     // Save bridge
     const btnSave = document.getElementById('btn-new-bridge');

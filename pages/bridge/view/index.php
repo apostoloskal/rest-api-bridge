@@ -117,9 +117,6 @@
                     echo $_GET['id'];
                 }
                 ?></p>
-                <button type="button" id="btn-clear" class="absolute right-1 red-button-1 cursor-pointer mr-4">
-                    Clear All
-                </button>
             </div>
             
             <!-- POST Response Alert -->
@@ -263,8 +260,11 @@
 
             <!-- Table Mapping -->
             <div class="flex-1 flex flex-col card-theme-1 m-4 p-2">
-                <div class="w-full items-center pb-2 border-b border-gray-300 dark:border-slate-500">
-                    <p class="text-center text-2xl font-semibold text-heading">Visual Mapper</p>
+                <div class="relative flex items-center justify-center pb-2 border-b border-gray-300 dark:border-slate-500">
+                    <p class="text-2xl font-semibold text-heading">Visual Mapper</p>
+                    <button type="button" id="btn-clear" class="absolute right-1 red-button-1 cursor-pointer mr-4">
+                        Clear All
+                    </button>
                 </div>
                 
                 <div class="flex-1 flex flex-row min-h-[300px]"> 

@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updatePostTable() {
         try {
-            const data = JSON.parse(editorPost.getValue());
+            const data = safelyParseJSON(editorPost.getValue());
             renderPostTable(data);
         } catch (error) {
             // Fails silently while user is typing invalid JSON
@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Grab the actual value from the current GET JSON
                 let getObj = {};
-                try { getObj = JSON.parse(editorGet.getValue()); } catch (err) {}
+                try { getObj = safelyParseJSON(editorGet.getValue()); } catch (err) {}
 
                 if (getObj.hasOwnProperty(draggedGetKey)) {
                     // Save the mapping to memory!
@@ -166,6 +166,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
             postContainer.appendChild(row);
         }
+    }
+
+    // Clear all key mappings
+    const btnClear = document.getElementById('btn-clear');
+    if (btnClear) {
+        btnClear.addEventListener('click', () => {
+            localStorage.removeItem('saved_key_mappings');
+
+            window.keyMappings = {};
+
+            updatePostTable();
+        });
     }
 
     editorGet.on('change', updateGetTable);

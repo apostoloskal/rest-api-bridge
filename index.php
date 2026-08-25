@@ -2,7 +2,7 @@
 require 'php/database.php';
 
 // Pagination setup
-$limit = 10;
+$limit = 15;
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($page - 1) * $limit;
 
@@ -128,14 +128,14 @@ $bridges = $stmt->fetchAll();
 
                     <!-- Pagination Controls -->
                     <?php if ($totalPages > 1): ?>
-                        <div class="flex justify-center items-center gap-2 border-t border-gray-300 dark:border-slate-500">
-                            <div class="m-4">
+                        <div class="flex justify-center items-center border-t border-gray-300 dark:border-slate-500">
+                            <div class="m-4 flex gap-2">
                                 <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                                    <a href="?page=<?php echo $i; ?>" class="px-3 py-1 m-2 border rounded <?php echo $i === $page ? 'bg-indigo-500 text-white border-indigo-500' : 'border-gray-400 hover:bg-gray-300 dark:hover:bg-slate-500'; ?>">
+                                    <a href="?page=<?php echo $i; ?>" class="inline-flex items-center justify-center w-8 h-8 border rounded <?php echo $i === $page ? 'bg-indigo-500 text-white border-indigo-500' : 'border-gray-400 hover:bg-gray-300 dark:hover:bg-slate-500'; ?>">
                                         <?php echo $i; ?>
                                     </a>
                                 <?php endfor; ?>
-                            <div>
+                            </div>
                         </div>
                     <?php endif; ?>
                 <?php endif; ?>

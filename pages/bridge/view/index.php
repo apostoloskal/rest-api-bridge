@@ -74,6 +74,14 @@
                 @apply bg-gray-400 dark:bg-gray-600 hover:bg-gray-500 
                 text-white px-4 py-1 rounded-md text-sm shadow-xs font-medium
             }
+
+            .violet-button-1 {
+                @apply text-white bg-violet-500 rounded-lg
+                box-border border border-transparent hover:bg-violet-400 
+                focus:ring-4 focus:ring-violet-600 
+                shadow-xs font-medium leading-5
+                text-sm px-4 py-1.5 focus:outline-none cursor-pointer
+            }
         }
     </style>
 
@@ -104,7 +112,11 @@
                 <a href="/" class="absolute left-1 button-gray-1 inline-block ml-4">
                     Back
                 </a>
-                <p class="text-4xl font-semibold text-heading">Bridge</p>
+                <p class="text-4xl font-semibold text-heading">Bridge <?php 
+                if (isset($_GET['id'])) {
+                    echo $_GET['id'];
+                }
+                ?></p>
                 <button type="button" id="btn-clear" class="absolute right-1 red-button-1 cursor-pointer mr-4">
                     Clear All
                 </button>
@@ -159,52 +171,68 @@
 
             <!-- Bridge Connection Details -->
             <div class="flex-1 flex flex-col card-theme-1 m-4 p-2">
-                <div class="w-full items-center pb-2 border-b border-gray-300 dark:border-slate-500">
-                    <p class="text-center text-2xl font-semibold text-heading">Bridge Details</p>
+                <div class="relative flex items-center justify-center pb-2 border-b border-gray-300 dark:border-slate-500">
+                    <p class="text-2xl font-semibold text-heading">Bridge Details</p>
+                    <button type="button" id="btn-new-bridge" class="absolute right-1 inline-block ml-4 violet-button-1">
+                        Update
+                    </button>
                 </div>
 
                 <div class="flex-1 flex flex-row">
-                    <div class="w-1/3 flex flex-col items-center card-theme-2 p-4 m-4"> 
-                        <label for="bridge-name" class="mb-2">Bridge Name</label>
-                        <input
-                        name="bridge-name"
-                        id="bridge-name"
-                        placeholder="Bridge name"
-                        class="bg-neutral-secondary-medium border 
-                        border-default-medium text-heading text-sm 
-                        rounded-base focus:ring-brand focus:border-brand 
-                        block w-full px-3 py-2.5 shadow-xs placeholder:text-body
-                        focus:outline-none"
-                        />
+                    <div class="w-1/2 flex flex-col">
+                        <div class="flex flex-col items-center card-theme-2 p-4 m-2"> 
+                            <label for="bridge-name" class="mb-2">Bridge Name</label>
+                            <input
+                            name="bridge-name"
+                            id="bridge-name"
+                            placeholder="Bridge name"
+                            required
+                            class="bg-neutral-secondary-medium border 
+                            border-default-medium text-heading text-sm 
+                            rounded-base focus:ring-brand focus:border-brand 
+                            block w-full px-3 py-2.5 shadow-xs placeholder:text-body
+                            focus:outline-none"
+                            />
+                        </div>
+
+                        <div class="flex flex-col items-center card-theme-2 p-4 m-2"> 
+                            <label for="get-endpoint" class="mb-2">Get URL</label>
+                            <input
+                            name="get-endpoint"
+                            id="get-endpoint"
+                            placeholder="Get endpoint url"
+                            required
+                            class="bg-neutral-secondary-medium border 
+                            border-default-medium text-heading text-sm 
+                            rounded-base focus:ring-brand focus:border-brand 
+                            block w-full px-3 py-2.5 shadow-xs placeholder:text-body
+                            focus:outline-none"
+                            />
+                        </div>
+
+                        <div class="flex flex-col items-center card-theme-2 p-4 m-2"> 
+                            <label for="post-endpoint" class="mb-2">Post URL</label>
+                            <input
+                            name="post-endpoint"
+                            id="post-endpoint"
+                            placeholder="Post endpoint url"
+                            required
+                            class="bg-neutral-secondary-medium border 
+                            border-default-medium text-heading text-sm 
+                            rounded-base focus:ring-brand focus:border-brand 
+                            block w-full px-3 py-2.5 shadow-xs placeholder:text-body
+                            focus:outline-none"
+                            />
+                        </div>
                     </div>
 
-                    <div class="w-1/3 flex flex-col items-center card-theme-2 p-4 m-4"> 
-                        <label for="get-endpoint" class="mb-2">Get URL</label>
-                        <input
-                        name="get-endpoint"
-                        id="get-endpoint"
-                        placeholder="Get endpoint url"
-                        class="bg-neutral-secondary-medium border 
-                        border-default-medium text-heading text-sm 
-                        rounded-base focus:ring-brand focus:border-brand 
-                        block w-full px-3 py-2.5 shadow-xs placeholder:text-body
-                        focus:outline-none"
-                        />
+                    <div class="flex flex-col w-1/2 p-2 border-l border-gray-300 dark:border-slate-500">
+                        <p class="text-center text-xl font-semibold text-heading pb-2">Payload Headers (JSON)</p>
+                        <div class="w-full h-full text-left">
+                            <textarea id="textarea-headers" name="headers-json"></textarea>
+                        </div>
                     </div>
 
-                    <div class="w-1/3 flex flex-col items-center card-theme-2 p-4 m-4"> 
-                        <label for="post-endpoint" class="mb-2">Post URL</label>
-                        <input
-                        name="post-endpoint"
-                        id="post-endpoint"
-                        placeholder="Post endpoint url"
-                        class="bg-neutral-secondary-medium border 
-                        border-default-medium text-heading text-sm 
-                        rounded-base focus:ring-brand focus:border-brand 
-                        block w-full px-3 py-2.5 shadow-xs placeholder:text-body
-                        focus:outline-none"
-                        />
-                    </div>
                 </div>
             </div>
 

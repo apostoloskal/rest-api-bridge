@@ -11,6 +11,19 @@ document.addEventListener('DOMContentLoaded', () => {
         theme: currentTheme
     };
 
+    const textareaHeaders = document.getElementById('textarea-headers');
+
+    if (textareaHeaders) {
+        const editorHeaders = CodeMirror.fromTextArea(textareaHeaders, editorOptions);
+
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            const newTheme = event.matches ? "dracula" : "default";
+            editorHeaders.setOption("theme", newTheme);
+        });
+
+        window.editorHeaders = editorHeaders;
+    }
+
     const textareaGet = document.getElementById('textarea-get');
     const textareaPost = document.getElementById('textarea-post');
 

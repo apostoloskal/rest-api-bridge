@@ -1,8 +1,25 @@
+function safelyParseJSON(rawString) {
+    if (!rawString) return {};
+    
+    // The Regex: Match a full string literal OR a trailing comma
+    const cleanedString = rawString.replace(/"(?:[^"\\]|\\.)*"|,\s*([\]}])/g, (match, bracket) => {
+        // If 'bracket' exists, we found a trailing comma! Return just the bracket.
+        if (bracket) {
+            return bracket;
+        }
+        // Otherwise, we matched a string literal. Return it completely untouched.
+        return match;
+    });
+
+    return JSON.parse(cleanedString);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    const editorHeaders = window.editorHeaders;
     const editorGet = window.editorGet;
     const editorPost = window.editorPost;
 
-    if (!editorGet || !editorPost) return;
+    if (!editorHeaders || !editorGet || !editorPost) return;
 
     // Load bridge from url params
     const urlParams = new URLSearchParams(window.location.search);
@@ -15,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(result => {
                 if (result.success) {
                     const data = result.data;
-                    
+
                     // Populate URL inputs
                     const getEp = document.getElementById('get-endpoint');
                     const postEp = document.getElementById('post-endpoint');
@@ -26,8 +43,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     const nameInput = document.getElementById('bridge-name');
                     if (nameInput) nameInput.value = data.name;
 
+                    // Load headers
+                    let headersObj = {};
+                    if (typeof data.headers === 'string') {
+                        headersObj = safelyParseJSON(data.headers);
+                    } else if (data.headers) {
+                        headersObj = data.headers;
+                    }
+                    
+                    const headersString = JSON.stringify(headersObj, null, 2);
+                    
+                    window.editorHeaders.setValue(headersString);
+
                     // Load Key Mappings safely
-                    window.keyMappings = typeof data.key_mappings === 'string' ? JSON.parse(data.key_mappings) : data.key_mappings;
+                    window.keyMappings = typeof data.key_mappings === 'string' ? safelyParseJSON(data.key_mappings) : data.key_mappings;
                     if (!window.keyMappings) window.keyMappings = {};
                     
                     // Force-save everything to LocalStorage so it persists
@@ -41,12 +70,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     editorPost.setValue('');
                     localStorage.removeItem('saved_get_json');
                     localStorage.removeItem('saved_post_json');
-
-                    // REMOVE the ?id= parameter from the URL so refreshing doesn't reload it!
-                    if (window.history.replaceState) {
-                        const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-                        window.history.replaceState({path: cleanUrl}, '', cleanUrl);
-                    }
                 } else {
                     alert("Could not load bridge: " + result.message);
                 }

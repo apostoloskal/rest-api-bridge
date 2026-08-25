@@ -170,7 +170,7 @@
             <div class="flex-1 flex flex-col card-theme-1 m-4 p-2">
                 <div class="relative flex items-center justify-center pb-2 border-b border-gray-300 dark:border-slate-500">
                     <p class="text-2xl font-semibold text-heading">Bridge Details</p>
-                    <button type="button" id="btn-new-bridge" class="absolute right-1 inline-block ml-4 violet-button-1">
+                    <button type="button" id="btn-update-bridge-details" class="absolute right-1 inline-block ml-4 violet-button-1">
                         Update
                     </button>
                 </div>

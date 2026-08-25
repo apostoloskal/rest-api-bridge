@@ -59,7 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.keyMappings = typeof data.key_mappings === 'string' ? safelyParseJSON(data.key_mappings) : data.key_mappings;
                     if (!window.keyMappings) window.keyMappings = {};
                     localStorage.setItem('saved_key_mappings', JSON.stringify(window.keyMappings));
-                    console.log(data.key_mappings)
                     
                     // Clean up CodeMirror editors if they had junk in them
                     editorGet.setValue('');
@@ -89,44 +88,56 @@ document.addEventListener('DOMContentLoaded', () => {
     editorGet.on('change', () => localStorage.setItem('saved_get_json', editorGet.getValue()));
     editorPost.on('change', () => localStorage.setItem('saved_post_json', editorPost.getValue()));
 
-    // Save bridge
-    const btnSave = document.getElementById('btn-new-bridge');
+
+    // Update Bridge Details
+    const btnUpdate = document.getElementById('btn-update-bridge-details');
     
-    if (btnSave) {
-        btnSave.addEventListener('click', async () => {
+    if (btnUpdate) {
+        btnUpdate.addEventListener('click', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const bridgeId = urlParams.get('id');
+
+            if (!bridgeId) {
+                alert("Cannot update: No Bridge ID found in the URL.");
+                return;
+            }
+
             const nameInput = document.getElementById('bridge-name').value.trim();
             const srcUrl = document.getElementById('get-endpoint').value.trim();
             const dstUrl = document.getElementById('post-endpoint').value.trim();
             
-            if (!nameInput) {
-                alert("Please provide a name for this Bridge before saving.");
-                return;
+            let headersObj = {};
+            if (window.editorHeaders) {
+                try {
+                    headersObj = safelyParseJSON(window.editorHeaders.getValue());
+                } catch (e) {
+                    alert("Invalid JSON in Headers box. Please fix it before updating.");
+                    return;
+                }
             }
-            if (!srcUrl || !dstUrl) {
-                alert("Both Get URL and Post URL must be filled out to save.");
+            
+            if (!nameInput || !srcUrl || !dstUrl) {
+                alert("Please fill out Name, Get URL, and Post URL.");
                 return;
             }
 
-            // Construct the payload to match your MariaDB columns
+            // Construct the payload WITH the ID
             const payload = {
+                id: bridgeId, 
                 name: nameInput,
                 src_url: srcUrl,
                 dst_url: dstUrl,
-                key_mappings: window.keyMappings || {},
-                headers: {} // Placeholder for future custom headers
+                headers: headersObj
             };
 
-            // Temporarily change button text so the user knows it's working
-            const originalText = btnSave.innerText;
-            btnSave.innerText = "Saving...";
+            const originalText = btnUpdate.innerText;
+            btnUpdate.innerText = "Updating...";
 
             try {
-                // Send the data to your PHP endpoint
-                const response = await fetch('/php/save_bridge.php', {
+                // Send it to the new UPDATE endpoint
+                const response = await fetch('/php/update_bridge_details.php', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
@@ -135,14 +146,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (result.success) {
                     alert(result.message);
                 } else {
-                    alert("Failed to save: " + result.message);
+                    alert("Failed to update: " + result.message);
                 }
             } catch (error) {
-                console.error("Error saving bridge:", error);
-                alert("A network error occurred while saving.");
+                console.error("Error updating bridge:", error);
+                alert("A network error occurred while updating.");
             } finally {
-                // Restore button text
-                btnSave.innerText = originalText;
+                btnUpdate.innerText = originalText;
             }
         });
     }

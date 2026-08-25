@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 // Send the data to your PHP endpoint
-                const response = await fetch('/php/save_bridge.php', {
+                const response = await fetch('/php/create_bridge.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

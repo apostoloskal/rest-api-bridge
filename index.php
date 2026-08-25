@@ -46,9 +46,9 @@ $bridges = $stmt->fetchAll();
             }
 
             .green-button-1 {
-                @apply text-white bg-green-500 dark:bg-green-700 rounded-lg
+                @apply text-white bg-green-600 rounded-lg
                 box-border border border-transparent hover:bg-green-400 
-                hover:dark:bg-green-600 focus:ring-4 focus:ring-green-600 
+                hover:dark:bg-green-700 focus:ring-4 focus:ring-green-600 
                 focus:dark:ring-green-800 shadow-xs font-medium leading-5
                 text-sm px-4 py-2.5 focus:outline-none cursor-pointer
             }
@@ -59,20 +59,6 @@ $bridges = $stmt->fetchAll();
                 hover:dark:bg-blue-600 focus:ring-4 focus:ring-blue-600 
                 focus:dark:ring-blue-800 shadow-xs font-medium leading-5
                 text-sm px-4 py-1.5 focus:outline-none cursor-pointer
-            }
-
-            .red-button-1 {
-                @apply bg-red-500 hover:bg-red-400 text-white px-3 py-1 rounded text-sm
-            }
-
-            .table-theme-1 {
-                @apply bg-gray-300 dark:bg-slate-800 focus:outline-none rounded-lg
-                box-border border border-transparent focus:ring-2 focus:ring-gray-400
-                focus:dark:ring-slate-800 shadow-xs text-sm
-            }
-
-            .card-theme-2 {
-                @apply shadow-md bg-gray-300 dark:bg-slate-800 rounded-lg
             }
         }
     </style>
@@ -88,8 +74,11 @@ $bridges = $stmt->fetchAll();
 <body class="min-h-screen flex flex-col">
     <main>
         <form method="POST" class="flex-1 flex flex-col max-w-5xl m-auto">
-            <div class="w-full items-center p-4">
-                <p class="text-center text-4xl font-semibold text-heading">Bridges</p>
+            <div class="relative flex items-center justify-center p-4">
+                <p class="text-4xl font-semibold text-heading">Bridges</p>
+                <a href="/pages/bridge/create" class="absolute right-1 w-fit green-button-1 cursor-pointer p-2">
+                    Create New Bridge
+                </a>
             </div>
 
             <div class="card-theme-1 flex-1 flex flex-col">
@@ -116,7 +105,7 @@ $bridges = $stmt->fetchAll();
                                         <td class="py-3 px-4 text-sm truncate max-w-xs text-gray-600 dark:text-gray-300"><?php echo htmlspecialchars($bridge['dst_url']); ?></td>
                                         <td class="py-3 px-3 text-right">
                                             <!-- This link sends the ID to index.php! -->
-                                            <a href="/pages/bridge?id=<?php echo $bridge['id']; ?>" class="blue-button-1">
+                                            <a href="/pages/bridge/view?id=<?php echo $bridge['id']; ?>" class="blue-button-1">
                                                 Open
                                             </a>
                                         </td>

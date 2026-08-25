@@ -39,7 +39,7 @@
             .green-button-1 {
                 @apply text-white bg-green-600 rounded-lg
                 box-border border border-transparent hover:bg-green-400 
-                hover:dark:bg-green-600 focus:ring-4 focus:ring-green-600 
+                hover:dark:bg-green-700 focus:ring-4 focus:ring-green-600 
                 focus:dark:ring-green-800 shadow-xs font-medium leading-5
                 text-sm px-4 py-2.5 focus:outline-none cursor-pointer
             }
@@ -64,6 +64,11 @@
 
             .card-theme-2 {
                 @apply shadow-md bg-gray-300 dark:bg-slate-800 rounded-lg
+            }
+
+            .button-gray-1 {
+                @apply bg-gray-400 dark:bg-gray-600 hover:bg-gray-500 
+                text-white px-4 py-1 rounded-md text-sm shadow-xs font-medium
             }
         }
     </style>
@@ -91,14 +96,12 @@
 <body class="min-h-screen flex flex-col">
     <main>
         <form method="POST" class="flex-1 flex flex-col max-w-5xl m-auto">
-            <div class="w-full items-center p-4">
-                <p class="text-center text-4xl font-semibold text-heading">Bridge</p>
-            </div>
-            <div class="flex-1 flex flex-row justify-between">
-                <a href="/" class="bg-gray-400 dark:bg-gray-600 hover:bg-gray-500 text-white px-4 py-1 rounded-md text-sm shadow-xs font-medium inline-block ml-4">
+            <div class="relative flex items-center justify-center p-4">
+                <a href="/" class="absolute left-1 button-gray-1 inline-block ml-4">
                     Back
                 </a>
-                <button type="button" id="btn-clear" class="red-button-1 cursor-pointer mr-4">
+                <p class="text-4xl font-semibold text-heading">Bridge</p>
+                <button type="button" id="btn-clear" class="absolute right-1 red-button-1 cursor-pointer mr-4">
                     Clear All
                 </button>
             </div>
@@ -199,14 +202,6 @@
                         />
                     </div>
                 </div>
-                    <div class="w-fit ml-auto">
-                        <button type="button" id="btn-new-bridge" class="w-fit green-button-1 cursor-pointer mr-4 p-2">
-                            Create New Bridge
-                        </button>
-                    </div>
-                <div>
-
-                </div>
             </div>
 
             <!-- JSON Text Area -->
@@ -259,6 +254,6 @@
         </form>
     </main>
 
-    <script type="module" src="/pages/bridge/js/main.js"></script>
+    <script type="module" src="/pages/bridge/view/js/main.js"></script>
 </body>
 </html>

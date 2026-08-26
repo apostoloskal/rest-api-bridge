@@ -14,6 +14,26 @@ function safelyParseJSON(rawString) {
     return JSON.parse(cleanedString);
 }
 
+function constructPostPayloadFromKeyMappings() {
+    if (!window.keyMappings || !window.editorPost || !window.editorGet) return;
+
+    let getObj = {};
+    if (window.editorGet) {
+        getObj = safelyParseJSON(window.editorGet.getValue());
+    }
+
+    let postObj = {};
+    for (const [postKey, getKey] of Object.entries(window.keyMappings)) {
+        if (getObj.hasOwnProperty(getKey)) {
+            postObj[postKey] = getObj[getKey];
+        } else {
+            postObj[postKey] = 'Key is missing from get JSON: ' . getKey; 
+        }
+    }
+
+    window.editorPost.setValue(JSON.stringify(postObj, null, 2));
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const editorHeaders = window.editorHeaders;
     const editorGet = window.editorGet;
@@ -59,6 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.keyMappings = typeof data.key_mappings === 'string' ? safelyParseJSON(data.key_mappings) : data.key_mappings;
                     if (!window.keyMappings) window.keyMappings = {};
                     localStorage.setItem('saved_key_mappings', JSON.stringify(window.keyMappings));
+
+                    // Automatically build the post payload from defined mappings
+                    editorPost.setValue(constructPostPayloadFromKeyMappings());
                     
                 } else {
                     alert("Could not load bridge: " + result.message);
@@ -67,21 +90,16 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(err => console.error("Error loading bridge:", err));
     }
 
-    // JSON storage
+    // Get Payload JSON persistence
     if (!editorGet.getValue().trim() && localStorage.getItem('saved_get_json')) {
         editorGet.setValue(localStorage.getItem('saved_get_json'));
-    }
-    if (!editorPost.getValue().trim() && localStorage.getItem('saved_post_json')) {
-        editorPost.setValue(localStorage.getItem('saved_post_json'));
     }
 
     // Load request payloads on page load
     localStorage.setItem('saved_get_json', editorGet.getValue());
-    localStorage.setItem('saved_post_json', editorPost.getValue());
 
     // Store any changes made to the request payloads
     editorGet.on('change', () => localStorage.setItem('saved_get_json', editorGet.getValue()));
-    editorPost.on('change', () => localStorage.setItem('saved_post_json', editorPost.getValue()));
 
 
     // Update Bridge Details

@@ -10,6 +10,24 @@ function extractParams(urlStr) {
     return Array.from(params);
 }
 
+// save parameters to local storage so they do not reset after page reload
+function attachPersistenceToDynamicInputs(containerElement) {
+    const inputs = containerElement.querySelectorAll('.dynamic-param-input');
+    
+    inputs.forEach(input => {
+        const paramKey = input.getAttribute('data-param'); 
+        
+        const savedValue = localStorage.getItem('saved_dyn_' + paramKey);
+        if (savedValue !== null) {
+            input.value = savedValue;
+        }
+
+        input.addEventListener('input', (e) => {
+            localStorage.setItem('saved_dyn_' + paramKey, e.target.value);
+        });
+    });
+}
+
 function renderDynamicParams() {
     const getUrl = document.getElementById('get-endpoint').value.trim();
     const postUrl = document.getElementById('post-endpoint').value.trim();
@@ -60,6 +78,7 @@ function renderDynamicParams() {
                 `;
             });
             getParamsDiv.innerHTML = getHtml;
+            attachPersistenceToDynamicInputs(getParamsDiv);
         }
     }
 
@@ -90,6 +109,7 @@ function renderDynamicParams() {
                 `;
             });
             postParamsDiv.innerHTML = postHtml;
+            attachPersistenceToDynamicInputs(postParamsDiv);
         }
     }
 }

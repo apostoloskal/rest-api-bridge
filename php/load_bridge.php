@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-require 'database.php';
+require './database.php';
 
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 

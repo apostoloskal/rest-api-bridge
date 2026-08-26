@@ -76,7 +76,7 @@ $bridges = $stmt->fetchAll();
         <form method="POST" class="flex-1 flex flex-col max-w-5xl m-auto">
             <div class="relative flex items-center justify-center p-4">
                 <p class="text-4xl font-semibold text-heading">Bridges</p>
-                <a href="/pages/bridge/create" class="absolute right-1 w-fit green-button-1 cursor-pointer p-2">
+                <a href="./pages/bridge/create" class="absolute right-1 w-fit green-button-1 cursor-pointer p-2">
                     Create New Bridge
                 </a>
             </div>
@@ -105,7 +105,7 @@ $bridges = $stmt->fetchAll();
                                         <td class="py-3 px-4 text-sm truncate max-w-xs text-gray-600 dark:text-gray-300"><?php echo htmlspecialchars($bridge['dst_url']); ?></td>
                                         <td class="py-3 px-3 text-right">
                                             <!-- This link sends the ID to index.php! -->
-                                            <a href="/pages/bridge/view?id=<?php echo $bridge['id']; ?>" class="blue-button-1">
+                                            <a href="./pages/bridge/view?id=<?php echo $bridge['id']; ?>" class="blue-button-1">
                                                 Open
                                             </a>
                                         </td>

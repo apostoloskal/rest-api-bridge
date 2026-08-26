@@ -79,7 +79,7 @@
     <main>
         <form method="POST" class="flex-1 flex flex-col max-w-5xl m-auto">
             <div class="relative flex items-center justify-center p-4">
-                <a href="/" class="absolute left-1 button-gray-1 inline-block ml-4">
+                <a href="../../" class="absolute left-1 button-gray-1 inline-block ml-4">
                     Back
                 </a>
                 <p class="text-4xl font-semibold text-heading">Create Bridge</p>

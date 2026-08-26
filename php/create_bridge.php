@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json');
 
-require 'database.php'; 
+require './database.php'; 
 
 // Get the raw JSON payload from JavaScript
 $input = file_get_contents('php://input');

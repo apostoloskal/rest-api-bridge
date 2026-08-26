@@ -48,4 +48,22 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('resolved-get-endpoint').value = activeUrl;
         });
     }
+
+    const btnPost = document.getElementById('btn-post-payload');
+
+    if (btnPost) {
+        btnPost.addEventListener('click', async (e) => {
+            const rawPostUrl = document.getElementById('post-endpoint').value;
+            const activeUrl = resolveDynamicPostUrl(rawPostUrl); // final resolved url to send to php
+            
+            // Check if there are any un-filled parameters left over
+            if (activeUrl.includes('{') || activeUrl.includes('}')) {
+                e.preventDefault();
+                alert("Please fill out all dynamic URL parameters before posting.");
+                return;
+            }
+    
+            document.getElementById('resolved-post-endpoint').value = activeUrl;
+        });
+    }
 });

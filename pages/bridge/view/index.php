@@ -279,7 +279,14 @@
                     </div>
                     
                     <div class="flex flex-col w-1/2 p-2">
-                        <p class="text-center text-xl font-semibold text-heading pb-2">POST</p>
+                        <div class="relative flex items-center justify-center pb-2">
+                            <p class="text-xl font-semibold text-heading">POST</p>
+                            <input type="hidden" name="resolved-post-endpoint" id="resolved-post-endpoint">
+                            <button type="submit" name="action" value="post" id="btn-post-payload" 
+                            class="absolute right-1 inline-block ml-4 blue-button-1">
+                                Post
+                            </button>
+                        </div>
                         <div class="w-full h-full text-left">
                             <textarea id="textarea-post" name="post-json"><?php echo htmlspecialchars($_POST['post-json'] ?? ''); ?></textarea>
                         </div>

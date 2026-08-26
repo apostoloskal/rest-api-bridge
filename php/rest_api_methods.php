@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     } 
     // Post action
     elseif ($action === 'post') {
-        $postUrl = $_POST['post-endpoint'] ?? '';
+        $postUrl = !empty($_POST['resolved-post-endpoint']) ? $_POST['resolved-post-endpoint'] : ($_POST['post-endpoint'] ?? '');
         $postPayload = trim($_POST['post-json'] ?? '');
 
         if (!empty($postUrl) && !empty($postPayload)) {

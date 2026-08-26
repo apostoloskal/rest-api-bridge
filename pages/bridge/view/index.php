@@ -184,10 +184,9 @@
                             id="bridge-name"
                             placeholder="Bridge name"
                             required
-                            class="bg-neutral-secondary-medium border 
-                            border-default-medium text-heading text-sm 
-                            rounded-base focus:ring-brand focus:border-brand 
-                            block w-full px-3 py-2.5 shadow-xs placeholder:text-body
+                            class="bg-white dark:bg-slate-700 border border-gray-300 
+                            dark:border-slate-500 text-sm rounded-md block w-full 
+                            px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 
                             focus:outline-none"
                             />
                         </div>
@@ -199,10 +198,9 @@
                             id="get-endpoint"
                             placeholder="Get endpoint url"
                             required
-                            class="bg-neutral-secondary-medium border 
-                            border-default-medium text-heading text-sm 
-                            rounded-base focus:ring-brand focus:border-brand 
-                            block w-full px-3 py-2.5 shadow-xs placeholder:text-body
+                            class="bg-white dark:bg-slate-700 border border-gray-300 
+                            dark:border-slate-500 text-sm rounded-md block w-full 
+                            px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 
                             focus:outline-none"
                             />
                         </div>
@@ -214,10 +212,9 @@
                             id="post-endpoint"
                             placeholder="Post endpoint url"
                             required
-                            class="bg-neutral-secondary-medium border 
-                            border-default-medium text-heading text-sm 
-                            rounded-base focus:ring-brand focus:border-brand 
-                            block w-full px-3 py-2.5 shadow-xs placeholder:text-body
+                            class="bg-white dark:bg-slate-700 border border-gray-300 
+                            dark:border-slate-500 text-sm rounded-md block w-full 
+                            px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 
                             focus:outline-none"
                             />
                         </div>
@@ -230,6 +227,27 @@
                         </div>
                     </div>
 
+                </div>
+            </div>
+
+            <!-- Dynamic Url Parameters -->
+            <div id="dynamic-params-container" class="flex-1 flex flex-col card-theme-1 m-4 p-2">
+                <div class="w-full items-center pb-2 border-b border-gray-300 dark:border-slate-500">
+                    <p class="text-center text-2xl font-semibold text-heading">URL Parameters</p>
+                </div>
+                
+                <div class="flex-1 flex flex-row min-h-[100px]"> 
+                    <div class="flex flex-col w-1/2 p-2 border-r border-gray-300 dark:border-slate-500">
+                        <p class="text-center text-xl font-semibold text-heading pb-2">GET Params</p>
+                        <div id="get-url-params-div" class="w-full h-full flex flex-col gap-2 overflow-y-auto table-theme-1 p-2">
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col w-1/2 p-2">
+                        <p class="text-center text-xl font-semibold text-heading pb-2">POST Params</p>
+                        <div id="post-url-params-div" class="w-full h-full flex flex-col gap-2 overflow-y-auto table-theme-1 p-2">
+                        </div>
+                    </div>
                 </div>
             </div>
 

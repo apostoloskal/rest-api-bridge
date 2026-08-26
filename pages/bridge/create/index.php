@@ -103,10 +103,9 @@
                             id="bridge-name"
                             placeholder="Bridge name"
                             required
-                            class="bg-neutral-secondary-medium border 
-                            border-default-medium text-heading text-sm 
-                            rounded-base focus:ring-brand focus:border-brand 
-                            block w-full px-3 py-2.5 shadow-xs placeholder:text-body
+                            class="bg-white dark:bg-slate-700 border border-gray-300 
+                            dark:border-slate-500 text-sm rounded-md block w-full 
+                            px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 
                             focus:outline-none"
                             />
                         </div>
@@ -118,10 +117,9 @@
                             id="get-endpoint"
                             placeholder="Get endpoint url"
                             required
-                            class="bg-neutral-secondary-medium border 
-                            border-default-medium text-heading text-sm 
-                            rounded-base focus:ring-brand focus:border-brand 
-                            block w-full px-3 py-2.5 shadow-xs placeholder:text-body
+                            class="bg-white dark:bg-slate-700 border border-gray-300 
+                            dark:border-slate-500 text-sm rounded-md block w-full 
+                            px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 
                             focus:outline-none"
                             />
                         </div>
@@ -133,10 +131,9 @@
                             id="post-endpoint"
                             placeholder="Post endpoint url"
                             required
-                            class="bg-neutral-secondary-medium border 
-                            border-default-medium text-heading text-sm 
-                            rounded-base focus:ring-brand focus:border-brand 
-                            block w-full px-3 py-2.5 shadow-xs placeholder:text-body
+                            class="bg-white dark:bg-slate-700 border border-gray-300 
+                            dark:border-slate-500 text-sm rounded-md block w-full 
+                            px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 
                             focus:outline-none"
                             />
                         </div>

@@ -27,7 +27,7 @@ function constructPostPayloadFromKeyMappings() {
         if (getObj.hasOwnProperty(getKey)) {
             postObj[postKey] = getObj[getKey];
         } else {
-            postObj[postKey] = '{Key is missing: ' + getKey + '}'; 
+            postObj[postKey] = '{Key is missing: ' + getKey + '}';
         }
     }
 
@@ -56,8 +56,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Populate URL inputs
                     const getEp = document.getElementById('get-endpoint');
                     const postEp = document.getElementById('post-endpoint');
-                    if (getEp) getEp.value = data.src_url;
-                    if (postEp) postEp.value = data.dst_url;
+                    if (getEp) {
+                        getEp.value = data.src_url;
+                        getEp.dispatchEvent(new Event('input')); // clear url param fields
+                    }
+                    if (postEp) {
+                        postEp.value = data.dst_url
+                        postEp.dispatchEvent(new Event('input')); // clear url param fields
+                    };
                     
                     // Populate the Bridge Name input
                     const nameInput = document.getElementById('bridge-name');

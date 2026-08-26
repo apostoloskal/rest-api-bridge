@@ -330,6 +330,6 @@
         </form>
     </main>
 
-    <script type="module" src="/pages/bridge/view/js/main.js"></script>
+    <script type="module" src="./view/js/main.js"></script>
 </body>
 </html>

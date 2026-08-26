@@ -1,5 +1,5 @@
 <?php
-require 'php/database.php';
+require './php/database.php';
 
 // Pagination setup
 $limit = 15;

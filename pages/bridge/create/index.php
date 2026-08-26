@@ -154,6 +154,6 @@
             </div>
         </form>
     </main>
-    <script type="module" src="/pages/bridge/create/js/main.js"></script>
+    <script type="module" src="./create/js/main.js"></script>
 </body>
 </html>

@@ -24,13 +24,24 @@ document.addEventListener('DOMContentLoaded', () => {
             const srcUrl = document.getElementById('get-endpoint').value.trim();
             const dstUrl = document.getElementById('post-endpoint').value.trim();
             
-            let headersObj = {};
-            if (window.editorHeaders) {
+            let getHeadersObj = {};
+            if (window.getEditorHeaders) {
                 try {
-                    let rawJson = window.editorHeaders.getValue() || '{}';
-                    headersObj = safelyParseJSON(rawJson);
+                    let rawJson = window.getEditorHeaders.getValue() || '{}';
+                    getHeadersObj = safelyParseJSON(rawJson);
                 } catch (e) {
-                    alert("Invalid JSON in Headers box. Please fix it before saving.");
+                    alert("Invalid JSON in Get Headers box. Please fix it before saving.");
+                    return;
+                }
+            }
+
+            let postHeadersObj = {};
+            if (window.postEditorHeaders) {
+                try {
+                    let rawJson = window.postEditorHeaders.getValue() || '{}';
+                    postHeadersObj = safelyParseJSON(rawJson);
+                } catch (e) {
+                    alert("Invalid JSON in Post Headers box. Please fix it before saving.");
                     return;
                 }
             }
@@ -50,7 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 src_url: srcUrl,
                 dst_url: dstUrl,
                 key_mappings: {},
-                headers: headersObj
+                get_headers: getHeadersObj,
+                post_headers: postHeadersObj
             };
 
             // Temporarily change button text so the user knows it's working

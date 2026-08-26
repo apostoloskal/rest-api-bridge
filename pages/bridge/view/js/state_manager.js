@@ -35,11 +35,12 @@ function constructPostPayloadFromKeyMappings() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const editorHeaders = window.editorHeaders;
+    const getEditorHeaders = window.getEditorHeaders;
+    const postEditorHeaders = window.postEditorHeaders;
     const editorGet = window.editorGet;
     const editorPost = window.editorPost;
 
-    if (!editorHeaders || !editorGet || !editorPost) return;
+    if (!getEditorHeaders || !postEditorHeaders || !editorGet || !editorPost) return;
 
     // Load bridge from url params
     const urlParams = new URLSearchParams(window.location.search);
@@ -70,16 +71,27 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (nameInput) nameInput.value = data.name;
 
                     // Load headers
-                    let headersObj = {};
-                    if (typeof data.headers === 'string') {
-                        headersObj = safelyParseJSON(data.headers);
-                    } else if (data.headers) {
-                        headersObj = data.headers;
+                    // Get Payload Headers
+                    let getHeadersObj = {};
+                    if (typeof data.get_headers === 'string') {
+                        getHeadersObj = safelyParseJSON(data.get_headers);
+                    } else if (data.get_headers) {
+                        getHeadersObj = data.get_headers;
                     }
                     
-                    const headersString = JSON.stringify(headersObj, null, 2);
+                    const getHeadersString = JSON.stringify(getHeadersObj, null, 2);
+                    window.getEditorHeaders.setValue(getHeadersString);
+
+                    // Post Payload Headers
+                    let postHeadersObj = {};
+                    if (typeof data.post_headers === 'string') {
+                        postHeadersObj = safelyParseJSON(data.post_headers);
+                    } else if (data.post_headers) {
+                        postHeadersObj = data.post_headers;
+                    }
                     
-                    window.editorHeaders.setValue(headersString);
+                    const postHeadersString = JSON.stringify(postHeadersObj, null, 2);
+                    window.postEditorHeaders.setValue(postHeadersString);
 
                     // Load Key Mappings safely
                     window.keyMappings = typeof data.key_mappings === 'string' ? safelyParseJSON(data.key_mappings) : data.key_mappings;
@@ -125,12 +137,22 @@ document.addEventListener('DOMContentLoaded', () => {
             const srcUrl = document.getElementById('get-endpoint').value.trim();
             const dstUrl = document.getElementById('post-endpoint').value.trim();
             
-            let headersObj = {};
-            if (window.editorHeaders) {
+            let getHeadersObj = {};
+            if (window.getEditorHeaders) {
                 try {
-                    headersObj = safelyParseJSON(window.editorHeaders.getValue());
+                    getHeadersObj = safelyParseJSON(window.getEditorHeaders.getValue());
                 } catch (e) {
-                    alert("Invalid JSON in Headers box. Please fix it before updating.");
+                    alert("Invalid JSON in Get Headers box. Please fix it before updating.");
+                    return;
+                }
+            }
+
+            let postHeadersObj = {};
+            if (window.postEditorHeaders) {
+                try {
+                    postHeadersObj = safelyParseJSON(window.postEditorHeaders.getValue());
+                } catch (e) {
+                    alert("Invalid JSON in Post Headers box. Please fix it before updating.");
                     return;
                 }
             }
@@ -146,7 +168,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 name: nameInput,
                 src_url: srcUrl,
                 dst_url: dstUrl,
-                headers: headersObj
+                get_headers: getHeadersObj,
+                post_headers: postHeadersObj
             };
 
             const originalText = btnDetailsUpdate.innerText;

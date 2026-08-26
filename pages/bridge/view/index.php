@@ -180,7 +180,7 @@
                 </div>
 
                 <div class="flex-1 flex flex-row">
-                    <div class="w-1/2 flex flex-col">
+                    <div class="w-1/3 flex flex-col">
                         <div class="flex flex-col items-center card-theme-2 p-4 m-2"> 
                             <label for="bridge-name" class="mb-2">Bridge Name</label>
                             <input
@@ -224,10 +224,17 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-col w-1/2 p-2 border-l border-gray-300 dark:border-slate-500">
-                        <p class="text-center text-xl font-semibold text-heading pb-2">Payload Headers (JSON)</p>
+                    <div class="flex flex-col w-1/3 p-2 border-l border-gray-300 dark:border-slate-500">
+                        <p class="text-center text-xl font-semibold text-heading pb-2">Get Payload Headers (JSON)</p>
                         <div class="w-full h-full text-left">
-                            <textarea id="textarea-headers" name="headers-json"></textarea>
+                            <textarea id="get-payload-headers" name="headers-get-json"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col w-1/3 p-2 border-l border-gray-300 dark:border-slate-500">
+                        <p class="text-center text-xl font-semibold text-heading pb-2">Post Payload Headers (JSON)</p>
+                        <div class="w-full h-full text-left">
+                            <textarea id="post-payload-headers" name="headers-post-json"></textarea>
                         </div>
                     </div>
 

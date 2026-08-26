@@ -11,14 +11,17 @@ document.addEventListener('DOMContentLoaded', () => {
         theme: currentTheme
     };
 
-    const textareaHeaders = document.getElementById('textarea-headers');
+    const getHeaders = document.getElementById('get-payload-headers');
+    const postHeaders = document.getElementById('post-payload-headers');
 
-    if (textareaHeaders) {
-        const editorHeaders = CodeMirror.fromTextArea(textareaHeaders, editorOptions);
+    if (getHeaders && postHeaders) {
+        const getEditorHeaders = CodeMirror.fromTextArea(getHeaders, editorOptions);
+        const postEditorHeaders = CodeMirror.fromTextArea(postHeaders, editorOptions);
 
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
             const newTheme = event.matches ? "dracula" : "default";
-            editorHeaders.setOption("theme", newTheme);
+            getEditorHeaders.setOption("theme", newTheme);
+            postEditorHeaders.setOption("theme", newTheme);
         });
 
         const defaultHeaders = JSON.stringify({
@@ -27,8 +30,10 @@ document.addEventListener('DOMContentLoaded', () => {
             "Authorization": "Bearer YOUR_TOKEN_HERE"
         }, null, 2);
 
-        editorHeaders.setValue(defaultHeaders);
+        getEditorHeaders.setValue(defaultHeaders);
+        postEditorHeaders.setValue(defaultHeaders);
 
-        window.editorHeaders = editorHeaders;
+        window.getEditorHeaders = getEditorHeaders;
+        window.postEditorHeaders = postEditorHeaders;
     }
 });

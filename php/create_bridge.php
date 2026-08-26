@@ -19,7 +19,8 @@ $dst_url = trim($data['dst_url'] ?? '');
 
 // Convert arrays back to JSON strings for MariaDB's JSON column
 $key_mappings = !empty($data['key_mappings']) ? json_encode($data['key_mappings']) : '{}';
-$headers = !empty($data['headers']) ? json_encode($data['headers']) : '{}';
+$get_headers = !empty($data['get_headers']) ? json_encode($data['get_headers']) : '{}';
+$post_headers = !empty($data['post_headers']) ? json_encode($data['post_headers']) : '{}';
 
 // Basic Validation
 if (empty($name) || empty($src_url) || empty($dst_url)) {
@@ -30,8 +31,8 @@ if (empty($name) || empty($src_url) || empty($dst_url)) {
 // Insert into MariaDB safely using Prepared Statements
 try {
     $stmt = $pdo->prepare("
-        INSERT INTO saved_bridges (name, src_url, dst_url, key_mappings, headers) 
-        VALUES (:name, :src_url, :dst_url, :key_mappings, :headers)
+        INSERT INTO saved_bridges (name, src_url, dst_url, key_mappings, get_headers, post_headers) 
+        VALUES (:name, :src_url, :dst_url, :key_mappings, :get_headers, :post_headers)
     ");
     
     $stmt->execute([
@@ -39,7 +40,8 @@ try {
         ':src_url' => $src_url,
         ':dst_url' => $dst_url,
         ':key_mappings' => $key_mappings,
-        ':headers' => $headers
+        ':get_headers' => $get_headers,
+        ':post_headers' => $post_headers
     ]);
 
     echo json_encode([

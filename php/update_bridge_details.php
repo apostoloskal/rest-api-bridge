@@ -16,7 +16,8 @@ $id = isset($data['id']) ? (int)$data['id'] : 0;
 $name = trim($data['name'] ?? '');
 $src_url = trim($data['src_url'] ?? '');
 $dst_url = trim($data['dst_url'] ?? '');
-$headers = !empty($data['headers']) ? json_encode($data['headers']) : '{}';
+$get_headers = !empty($data['get_headers']) ? json_encode($data['get_headers']) : '{}';
+$post_headers = !empty($data['post_headers']) ? json_encode($data['post_headers']) : '{}';
 
 // Validation
 if ($id <= 0) {
@@ -35,7 +36,8 @@ try {
         SET name = :name, 
             src_url = :src_url, 
             dst_url = :dst_url, 
-            headers = :headers 
+            get_headers = :get_headers,
+            post_headers = :post_headers
         WHERE id = :id
     ");
     
@@ -43,7 +45,8 @@ try {
         ':name' => $name,
         ':src_url' => $src_url,
         ':dst_url' => $dst_url,
-        ':headers' => $headers,
+        ':get_headers' => $get_headers,
+        ':post_headers' => $post_headers,
         ':id' => $id
     ]);
 

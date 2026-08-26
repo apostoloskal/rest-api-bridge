@@ -29,7 +29,8 @@ try {
             src_url TEXT NOT NULL,
             dst_url TEXT NOT NULL,
             key_mappings JSON,
-            headers JSON,
+            get_headers JSON,
+            post_headers JSON,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     ";

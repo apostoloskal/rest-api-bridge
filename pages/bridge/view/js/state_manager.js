@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (bridgeId) {
         // Fetch the configuration from the database
-        fetch(`/php/load_bridge.php?id=${bridgeId}`)
+        fetch(window.APP_ROOT + `/php/load_bridge.php?id=${bridgeId}`)
             .then(res => res.json())
             .then(result => {
                 if (result.success) {
@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 // Send it to the new UPDATE endpoint
-                const response = await fetch('/php/update_bridge_details.php', {
+                const response = await fetch(window.APP_ROOT + '/php/update_bridge_details.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
@@ -223,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 // Send it to the new UPDATE endpoint
-                const response = await fetch('/php/update_bridge_key_mappings.php', {
+                const response = await fetch(window.APP_ROOT + '/php/update_bridge_key_mappings.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)

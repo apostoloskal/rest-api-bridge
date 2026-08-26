@@ -1,3 +1,11 @@
+<?php
+    $basePath = dirname($_SERVER['SCRIPT_NAME']) . '/../../../';
+    
+    if ($basePath === '/' || $basePath === '\\') {
+        $basePath = '';
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -74,12 +82,16 @@
         }
     </script>
 
+    <script>
+        window.APP_ROOT = '<?php echo $basePath; ?>';
+    </script>
+
 </head>
 <body class="min-h-screen flex flex-col">
     <main>
         <form method="POST" class="flex-1 flex flex-col max-w-5xl m-auto">
             <div class="relative flex items-center justify-center p-4">
-                <a href="../../" class="absolute left-1 button-gray-1 inline-block ml-4">
+                <a href="<?php echo $basePath; ?>" class="absolute left-1 button-gray-1 inline-block ml-4">
                     Back
                 </a>
                 <p class="text-4xl font-semibold text-heading">Create Bridge</p>
@@ -154,6 +166,6 @@
             </div>
         </form>
     </main>
-    <script type="module" src="./create/js/main.js"></script>
+    <script type="module" src="<?php echo $basePath; ?>pages/bridge/create/js/main.js"></script>
 </body>
 </html>

@@ -31,7 +31,7 @@ function constructPostPayloadFromKeyMappings() {
         }
     }
 
-    window.editorPost.setValue(JSON.stringify(postObj, null, 2));
+    if (Object.keys(postObj).length > 0) window.editorPost.setValue(JSON.stringify(postObj, null, 2));
 }
 
 document.addEventListener('DOMContentLoaded', () => {

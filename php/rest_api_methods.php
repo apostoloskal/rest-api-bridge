@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // Fetch action-
     if ($action === 'fetch') {
-        $getUrl = $_POST['get-endpoint'] ?? '';
+        $getUrl = !empty($_POST['resolved-get-endpoint']) ? $_POST['resolved-get-endpoint'] : ($_POST['get-endpoint'] ?? '');
         
         if (!empty($getUrl)) {
             curl_setopt($ch, CURLOPT_URL, $getUrl);

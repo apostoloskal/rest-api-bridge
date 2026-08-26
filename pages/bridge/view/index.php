@@ -1,3 +1,7 @@
+<?php 
+    require_once '../../../php/rest_api_methods.php'; 
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,7 +49,7 @@
                 box-border border border-transparent hover:bg-green-400 
                 hover:dark:bg-green-700 focus:ring-4 focus:ring-green-600 
                 focus:dark:ring-green-800 shadow-xs font-medium leading-5
-                text-sm px-4 py-2.5 focus:outline-none cursor-pointer
+                text-sm px-4 py-1 focus:outline-none cursor-pointer
             }
 
             .blue-button-1 {
@@ -53,7 +57,7 @@
                 box-border border border-transparent hover:bg-blue-400 
                 hover:dark:bg-blue-600 focus:ring-4 focus:ring-blue-600 
                 focus:dark:ring-blue-800 shadow-xs font-medium leading-5
-                text-sm px-4 py-2.5 focus:outline-none cursor-pointer
+                text-sm px-4 py-1 focus:outline-none cursor-pointer
             }
 
             .red-button-1 {
@@ -261,7 +265,14 @@
                 <div class="flex-1 flex flex-row min-h-[400px]"> 
                     
                     <div class="flex flex-col w-1/2 p-2 border-r border-gray-300 dark:border-slate-500">
-                        <p class="text-center text-xl font-semibold text-heading pb-2">GET</p>
+                        <div class="relative flex items-center justify-center pb-2">
+                            <p class="text-xl font-semibold text-heading">GET</p>
+                            <input type="hidden" name="resolved-get-endpoint" id="resolved-get-endpoint">
+                            <button type="submit" name="action" value="fetch" id="btn-fetch-payload" 
+                            class="absolute right-1 inline-block ml-4 green-button-1">
+                                Fetch
+                            </button>
+                        </div>
                         <div class="w-full h-full text-left">
                             <textarea id="textarea-get" name="get-json"><?php echo htmlspecialchars($fetchedJson ?? ''); ?></textarea>
                         </div>

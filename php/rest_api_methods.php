@@ -2,6 +2,20 @@
 $fetchedJson = '';
 $postResult = null;
 
+function parseCustomHeaders($jsonString) {
+    $curlHeaders = [];
+    if (!empty(trim($jsonString))) {
+        $decoded = json_decode($jsonString, true);
+        
+        if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+            foreach ($decoded as $key => $value) {
+                $curlHeaders[] = trim($key) . ': ' . trim($value);
+            }
+        }
+    }
+    return $curlHeaders;
+}
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     
     if (isset($_POST['get-json'])) {
@@ -17,9 +31,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Fetch action-
     if ($action === 'fetch') {
         $getUrl = !empty($_POST['resolved-get-endpoint']) ? $_POST['resolved-get-endpoint'] : ($_POST['get-endpoint'] ?? '');
-        
+        $rawGetHeaders = $_POST['headers-get-json'] ?? '{}';
+
         if (!empty($getUrl)) {
             curl_setopt($ch, CURLOPT_URL, $getUrl);
+
+            $getHeaders = parseCustomHeaders($rawGetHeaders);
+            if (!empty($getHeaders)) {
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $getHeaders);
+            }
             
             $response = curl_exec($ch);
             $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -40,17 +60,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     elseif ($action === 'post') {
         $postUrl = !empty($_POST['resolved-post-endpoint']) ? $_POST['resolved-post-endpoint'] : ($_POST['post-endpoint'] ?? '');
         $postPayload = trim($_POST['post-json'] ?? '');
+        $rawPostHeaders = $_POST['headers-post-json'] ?? '{}';
 
         if (!empty($postUrl) && !empty($postPayload)) {
             curl_setopt($ch, CURLOPT_URL, $postUrl);
-            
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $postPayload);
-            
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                'Content-Type: application/json',
-                'Content-Length: ' . strlen($postPayload)
-            ));
+
+            $postHeaders = parseCustomHeaders($rawPostHeaders);
+
+            if (!empty($postHeaders)) {
+                $postHeaders[] = 'Content-Length: ' . strlen($postPayload);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $postHeaders);
+            }
             
             $response = curl_exec($ch);
             $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);

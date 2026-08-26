@@ -27,7 +27,7 @@ function constructPostPayloadFromKeyMappings() {
         if (getObj.hasOwnProperty(getKey)) {
             postObj[postKey] = getObj[getKey];
         } else {
-            postObj[postKey] = 'Key is missing from get JSON: ' . getKey; 
+            postObj[postKey] = '{Key is missing: ' + getKey + '}'; 
         }
     }
 
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.setItem('saved_key_mappings', JSON.stringify(window.keyMappings));
 
                     // Automatically build the post payload from defined mappings
-                    editorPost.setValue(constructPostPayloadFromKeyMappings());
+                    constructPostPayloadFromKeyMappings();
                     
                 } else {
                     alert("Could not load bridge: " + result.message);

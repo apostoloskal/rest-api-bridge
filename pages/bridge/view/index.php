@@ -123,7 +123,7 @@
 </head>
 <body class="min-h-screen flex flex-col">
     <main>
-        <form method="POST" class="flex-1 flex flex-col max-w-5xl m-auto">
+        <form method="POST" class="flex-1 flex flex-col m-auto">
             <div class="relative flex items-center justify-center p-4">
                 <a href="<?php echo $basePath; ?>" class="absolute left-1 button-gray-1 inline-block ml-4">
                     Back
@@ -274,16 +274,10 @@
                 </div>
             </div>
 
-            <!-- JSON Text Area -->
             <div class="flex-1 flex flex-col card-theme-1 m-4 p-2">
-                <div class="w-full items-center pb-2 border-b border-gray-300 dark:border-slate-500">
-                    <p class="text-center text-2xl font-semibold text-heading">JSON</p>
-                </div>
-                
-                <!-- Code Mirror Text Areas -->
                 <div class="flex-1 flex flex-row min-h-[400px]"> 
                     
-                    <div class="flex flex-col w-1/2 p-2 border-r border-gray-300 dark:border-slate-500">
+                    <div class="flex flex-col w-1/3 p-2">
                         <div class="relative flex items-center justify-center pb-2">
                             <p class="text-xl font-semibold text-heading">GET</p>
                             <input type="hidden" name="resolved-get-endpoint" id="resolved-get-endpoint">
@@ -296,8 +290,35 @@
                             <textarea id="textarea-get" name="get-json"><?php echo htmlspecialchars($fetchedJson ?? ''); ?></textarea>
                         </div>
                     </div>
+
+                    <!-- Table Mapping -->
+                    <div class="w-1/3 flex flex-col card-theme-1 p-2">
+                        <div class="relative flex items-center justify-center pb-2 border-b border-gray-300 dark:border-slate-500">
+                            <button type="button" id="btn-clear" class="absolute left-1 red-button-1 cursor-pointer mr-4">
+                                Clear Mappings
+                            </button>
+                            <p class="text-2xl font-semibold text-heading">Visual Mapper</p>
+                            <button type="button" id="btn-update-key-mappings" class="absolute right-1 inline-block ml-4 violet-button-1">
+                                Update
+                            </button>
+                        </div>
+                        
+                        <div class="flex-1 flex flex-row min-h-[300px]"> 
+                            <div class="flex flex-col w-1/2 p-2 border-r border-gray-300 dark:border-slate-500">
+                                <p class="text-center text-xl font-semibold text-heading pb-2">GET Data (Drag from here)</p>
+                                <div id="get-table-container" class="w-full h-full flex flex-col gap-2 overflow-y-auto table-theme-1 p-2">
+                                </div>
+                            </div>
+                            
+                            <div class="flex flex-col w-1/2 p-2">
+                                <p class="text-center text-xl font-semibold text-heading pb-2">POST Payload (Drop here)</p>
+                                <div id="post-table-container" class="w-full h-full flex flex-col gap-2 overflow-y-auto table-theme-1 p-2">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     
-                    <div class="flex flex-col w-1/2 p-2">
+                    <div class="flex flex-col w-1/3 p-2">
                         <div class="relative flex items-center justify-center pb-2">
                             <p class="text-xl font-semibold text-heading">POST</p>
                             <input type="hidden" name="resolved-post-endpoint" id="resolved-post-endpoint">
@@ -308,33 +329,6 @@
                         </div>
                         <div class="w-full h-full text-left">
                             <textarea id="textarea-post" name="post-json"><?php echo htmlspecialchars($_POST['post-json'] ?? ''); ?></textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Table Mapping -->
-            <div class="flex-1 flex flex-col card-theme-1 m-4 p-2">
-                <div class="relative flex items-center justify-center pb-2 border-b border-gray-300 dark:border-slate-500">
-                    <button type="button" id="btn-clear" class="absolute left-1 red-button-1 cursor-pointer mr-4">
-                        Clear Mappings
-                    </button>
-                    <p class="text-2xl font-semibold text-heading">Visual Mapper</p>
-                    <button type="button" id="btn-update-key-mappings" class="absolute right-1 inline-block ml-4 violet-button-1">
-                        Update
-                    </button>
-                </div>
-                
-                <div class="flex-1 flex flex-row min-h-[300px]"> 
-                    <div class="flex flex-col w-1/2 p-2 border-r border-gray-300 dark:border-slate-500">
-                        <p class="text-center text-xl font-semibold text-heading pb-2">GET Data (Drag from here)</p>
-                        <div id="get-table-container" class="w-full h-full flex flex-col gap-2 overflow-y-auto table-theme-1 p-2">
-                        </div>
-                    </div>
-                    
-                    <div class="flex flex-col w-1/2 p-2">
-                        <p class="text-center text-xl font-semibold text-heading pb-2">POST Payload (Drop here)</p>
-                        <div id="post-table-container" class="w-full h-full flex flex-col gap-2 overflow-y-auto table-theme-1 p-2">
                         </div>
                     </div>
                 </div>

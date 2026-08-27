@@ -115,18 +115,17 @@ document.addEventListener('DOMContentLoaded', () => {
             let mappingBadge = '';
             if (keyMappings[key]) {
                 mappingBadge = 
-                `<span class="ml-2 px-2 py-0.5 text-xs rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 border border-blue-200 dark:border-blue-800" title="Mapped to GET key: ${keyMappings[key]}">
+                `<span class="ml-2 px-2 py-0.5 text-xs truncate rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 border border-blue-200 dark:border-blue-800" title="Mapped to GET key: ${keyMappings[key]}">
+                    <button type="button" class="remove-mapping-btn hover:text-red-500 dark:hover:text-red-400 font-bold focus:outline-none cursor-pointer text-sm leading-none" title="Remove binding">&times;</button>
                     🔗 ${keyMappings[key]}
-                    <button type="button" class="remove-mapping-btn ml-1.5 hover:text-red-500 dark:hover:text-red-400 font-bold focus:outline-none cursor-pointer text-sm leading-none" title="Remove binding">&times;</button>
                 </span>`;
             }
 
             row.innerHTML = `
                 <div class="flex items-center">
                     <span class="font-semibold text-green-600 dark:text-green-400">${key}</span>
-                    ${mappingBadge}
-                </div>
-                <span class="text-gray-500 dark:text-gray-300 truncate max-w-[40%]">${typeof value === 'object' ? '{...}' : value}</span>
+                    </div>
+                ${mappingBadge}
             `;
 
             row.addEventListener('dragover', (e) => {
